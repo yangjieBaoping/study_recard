@@ -1,0 +1,111 @@
+逻辑思路
+
+1.  点击按钮，弹出弹窗——点击关闭或取消关闭弹窗——点击确定获取数据发送请求无论成功失败关闭弹窗
+
+2.  书写弹窗样式——需要设置蒙层
+
+3.   在store中写入相关数据
+
+4.   在弹窗组件界面接收state中的数据——点击确定获取最新数据发送请求
+
+代码展示
+
+主界面
+<tempate>
+    //点此击按钮打开弹窗，@click为绑定事件
+    <button @click="getSure"></button>
+</template>
+...
+<script setup>
+    const getSure = async (括号内参数根据具体情况而定) => {
+        $store.commit('changStatus')
+    }
+    
+    //watch监听state改变的新数据依情况而定
+    watch(
+      //指向被监听数据
+      () => $store.state.getObj
+      (newVal) => {
+          //对新数据执行相关操作
+      },
+      // 深度监听
+      { deep: true }
+    )
+<script>
+
+store文件夹下index.js文件
+import { createStore } from 'vuex'
+export default createStore( { 
+    /**
+    *  state为仓库原数据
+    *  getters为对sstate原数据的计算，类似计算属性computed
+    *  mutations唯一可以修改state的方法
+    *  action可以包含异步操作
+    */
+    state: {
+        //开启或关闭弹窗的标识
+        isopen: false
+        //需要保存的数据
+        getObj: {
+            name: '',
+            age: ''
+        }
+    },
+    mutations: {
+        //改变弹窗状态或接收新数据改变state，payload为接收数据
+        changStatus(state,payload) {
+            state.isopen = !isopen
+            state.getObj.name = payload.name
+            state.getObj.age = payload.age
+        }
+    }
+ } )
+
+弹窗组件界面
+<template>
+    //弹窗蒙层
+    <div class='body'>
+         //弹窗主体
+        <div class='body_content'>
+            //这里可以用eleemntui组件库，自己用html来写
+            <div class='body_content_item'>
+                <label>姓名</label>
+                <el-input v-model='getObj.name' />
+            </div>
+            <div class='body_content_item'>
+                <label>年龄</label>
+                <el-input v-model='getObj.age' />
+            </div>
+            <div class='body_content_item'>
+                <el-button @click='closedown'>取消</el-button>
+                <el-button @click='suredown'>确认</el-button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script setup>
+    import { reactive } from 'vue'
+    import { useStore } from 'vuex'
+    // 这个为引入请求，根据每个公司每个人而不同，视情况而定
+    import { fether } from '@/utils/fether'
+    import { reactive } from 'vue'
+    import { reactive } from 'vue'
+    const $store = new useStore()
+    
+    //定义数据拿到state中保存的数据
+    const getObj = reactive ( { 
+        name: $store.state.getObj.name,
+        age: $store.state.getObj.age
+     } )
+
+    //点击取消按钮关闭弹窗
+    const closedown = async () => {
+        $store.commit('changStatus')
+    }
+
+    //点击确认按钮发送请求
+    const suredown = async () => {
+        let result = await fether('/接口路径/', '请求方式'，{ 请求参数  } )
+    }
+</script>

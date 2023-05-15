@@ -1,0 +1,16 @@
+html,body{
+  margin: 0px;
+  height: 0px;
+  height: 100%;
+}
+
+/* 高德地图去除水印 */
+.amap-logo {
+  display: none!important;
+  visibility: hidden!important;
+}
+ 
+.amap-copyright {
+  display: none!important;
+  visibility: hidden!important;
+}

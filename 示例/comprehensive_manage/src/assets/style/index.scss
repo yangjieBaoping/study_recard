@@ -1,0 +1,21 @@
+html,body,#app{
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+// 清除滚动条
+.clear_scroll::-webkit-scrollbar{
+    display: none;
+}
+
+// 公共标题
+.common_title{
+    height: 30px;
+    line-height: 30px;
+    font-size: 26px;
+    font-weight: bolder;
+    color: #000;
+    margin: 10px 0px;
+}

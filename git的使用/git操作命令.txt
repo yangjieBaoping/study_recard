@@ -1,0 +1,28 @@
+CSS和html
+
+代码冲突
+
+确认代码的修改删除后执行
+
+git add .
+
+git rebace -comtinue
+
+
+git命令执行流程
+
+1  git clone 克隆仓库地址
+
+2   git checkout -b feature-xxx  新建分支
+
+3   git checkout levelop   开发完毕后切换分支
+
+4    git add . 和 git commit -m ''   保存本地代码
+
+5     git pull origin develop   保持与develop分支的同步
+
+6    git push origin develop   将本地代码推送到develop分支上
+
+7   git branch -d feature-xxx   删除本地分支
+
+git版本回复

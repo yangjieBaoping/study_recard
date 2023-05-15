@@ -1,0 +1,53 @@
+1——父传子
+  1.vue2中写法
+  <--父组件-->
+  <template>
+    <div></div>
+    <--子组件-->
+    <Child :data='getNumber' />
+  </template>
+
+  <script>
+    import Child from '../compomens/Child.vue'
+    exporrt default {
+      data () {
+        return: {
+          //传递给子组件的数据
+          getNumber: 10
+        }
+      }
+    }
+  </script>
+
+  <--子组件-->
+  <temlate>
+    <div>{{ data }}</div>
+  </template>
+
+  <script>
+    export default {
+      props: {
+        data: Number
+      }
+    }
+  </script>
+  
+  2.vue3中写法
+  <--父组件-->
+  <template>
+    <div></div>
+    <Child :data='getNumber' />
+  </template>
+
+  <script setup>
+    import {  } from 'vue'
+    let getNumber = 10
+  </script>
+
+  <--子组件-->
+  <template>
+    <div></div>
+  </template>
+  <script setup>
+
+  </script>
