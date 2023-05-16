@@ -1,0 +1,5 @@
+1.  生成key
+ssh-keygen -t rsa -C “你的邮箱”
+overwrite项选择y其他直接回车
+2.  找到id_rsa.pub文件并复制其内容
+3.  进入github——点击setting——点击SSH and GPG keys——粘贴复制的内容
