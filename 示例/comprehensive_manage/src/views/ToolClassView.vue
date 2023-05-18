@@ -11,7 +11,7 @@
   </div>
   <div style="line-height: 30px">
     <span style="margin-right: 5px">工具类型：</span>
-    <select>
+    <select @change="changeStyle">
       <option
         v-for="item in typeList"
         :value="item.name"
@@ -26,6 +26,7 @@
       :tableHeight="''"
       :tableHead="list.tHead"
       :tableData="list.tBody"
+      :tableId="list.tId"
     />
   </div>
 </template>
@@ -95,6 +96,14 @@ const getType = () => {
 };
 getType();
 
+const changeStyle = (e) => {
+  for (let i = 0; i < typeList.length; i++) {
+    if (e.target.value === typeList[i].name) {
+      list.tId = typeList[i].table_id;
+    }
+  }
+};
+
 // 数据
 const list = reactive({
   // 表格
@@ -104,243 +113,148 @@ const list = reactive({
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 1,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 2,
+    },
+    {
+      name: "爱新觉罗",
+      age: "15",
+      time: "2022-10-13",
+      id: 3,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 4,
+    },
+    {
+      name: "阿里木.玛布提",
+      age: "15",
+      time: "2022-10-13",
+      id: 5,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 6,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 7,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 8,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 9,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 10,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 11,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 12,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 13,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 14,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 15,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 16,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 17,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 18,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 19,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 20,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 21,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 22,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
+      id: 23,
     },
     {
       name: "刘华",
       age: "15",
       time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
+      id: 24,
     },
   ],
+  tId: 1,
 });
 </script>
 
