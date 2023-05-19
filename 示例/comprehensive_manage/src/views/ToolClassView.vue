@@ -41,8 +41,6 @@ const toolList = reactive([
     type: [
       { name: "无外部样式", table_id: 1 },
       { name: "有复选框", table_id: 2 },
-      { name: "无复选框,有分页器", table_id: 3 },
-      { name: "有复选框,有分页器", table_id: 4 },
     ],
   },
   {
@@ -108,154 +106,21 @@ const changeStyle = (e) => {
 const list = reactive({
   // 表格
   tHead: ["姓名", "年龄", "时间", "操作"],
-  tBody: [
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 1,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 2,
-    },
-    {
-      name: "爱新觉罗",
-      age: "15",
-      time: "2022-10-13",
-      id: 3,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 4,
-    },
-    {
-      name: "阿里木.玛布提",
-      age: "15",
-      time: "2022-10-13",
-      id: 5,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 6,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 7,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 8,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 9,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 10,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 11,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 12,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 13,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 14,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 15,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 16,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 17,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 18,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 19,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 20,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 21,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 22,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 23,
-    },
-    {
-      name: "刘华",
-      age: "15",
-      time: "2022-10-13",
-      id: 24,
-    },
-  ],
+  tBody: [],
   tId: 1,
 });
+
+const getList = () => {
+  for (let i = 0; i < 200; i++) {
+    list.tBody.push({
+      name: `${i + 1}`,
+      age: Math.floor(Math.random() * 50 + 10),
+      time: "2022-10-13",
+      id: i + 1,
+    });
+  }
+};
+getList();
 </script>
 
 <style scoped lang="scss">

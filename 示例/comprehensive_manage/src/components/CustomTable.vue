@@ -26,7 +26,7 @@
   <div id="tbody">
     <table style="width: 100%; border-collapse: collapse">
       <tbody>
-        <tr v-for="item in props.tableData">
+        <tr v-for="item in tableLst.data">
           <td
             v-if="props.tableId === 2 || props.tableId === 4"
             class="item_card"
@@ -39,10 +39,7 @@
           </td>
           <td
             class="td_item item_card"
-            v-for="Item in Object.keys(item).splice(
-              0,
-              Object.keys(item).indexOf('id')
-            )"
+            v-for="(Item, index) in getKeys(Object.keys(item), index)"
           >
             {{ item[Item] }}
           </td>
@@ -58,8 +55,51 @@
       </tbody>
     </table>
   </div>
-  <div style="height: 30px; display: flex">
-    <div v-for="item in pagingPage.list"></div>
+  <div>
+    <div class="page_box" v-if="props.tableData.length > 5">
+      <div v-if="pagingPage.list.length <= 10" style="display: flex">
+        <div
+          v-for="(item, index) in pagingPage.list"
+          :style="{
+            color: item.status ? 'rgb(17, 156, 215)' : '#000',
+            border: item.status
+              ? '1px solid rgb(17, 156, 215)'
+              : '1px solid #000',
+          }"
+          class="page_item"
+          @click="toPage(item.value)"
+        >
+          {{ item.value }}
+        </div>
+      </div>
+      <div v-else style="display: flex">
+        <div
+          v-for="item in pagingPage.changeList"
+          :style="{
+            color: item.status ? 'rgb(17, 156, 215)' : '#000',
+            border: item.status
+              ? '1px solid rgb(17, 156, 215)'
+              : '1px solid #000',
+          }"
+          class="page_item"
+          @click="toPage(item.value)"
+        >
+          {{ item.value }}
+        </div>
+      </div>
+      <div style="margin-left: 20px">
+        <span>每页条数：</span>
+        <select
+          style="outline: none; border: 1px solid #f3f3f3"
+          @change="toPiece"
+        >
+          <option value="5" label="5"></option>
+          <option value="10" label="10"></option>
+          <option value="15" label="15"></option>
+          <option value="20" label="20"></option>
+        </select>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -75,10 +115,57 @@ const props = defineProps({
 });
 
 // 表格
-const tableLst = reactive({});
+const tableLst = reactive({ data: [] });
+
+// 分页器相关
+const pagingPage = reactive({
+  list: [],
+  // 每页条数
+  piece_num: 5,
+  // 页数
+  page_num: 1,
+  // 批次
+  key: 0,
+  // 分页过多处理数组
+  changeList: [],
+});
 
 // 获取
-const getList = () => {};
+const getList = (value) => {
+  if (Object.keys(value)[0] === "piece") {
+    pagingPage.piece_num = value[Object.keys(value)[0]];
+  } else {
+    pagingPage.page_num = value[Object.keys(value)[0]];
+  }
+  let arr = props.tableData.slice(
+    (pagingPage.page_num - 1) * pagingPage.piece_num,
+    pagingPage.piece_num * pagingPage.page_num
+  );
+  let Num = 0;
+  if (props.tableData.length % pagingPage.piece_num === 0) {
+    Num = Math.floor(props.tableData.length / pagingPage.piece_num);
+  } else {
+    Num = Math.floor(props.tableData.length / pagingPage.piece_num) + 1;
+  }
+  props.tableData.map((item) => {
+    if (props.tableData.length <= pagingPage.piece_num) {
+      tableLst.data.push(item);
+      pagingPage.list.push({ value: 1, status: true });
+    } else {
+      tableLst.data = [...arr];
+      if (pagingPage.list.length !== 0) {
+        pagingPage.list.splice(0, pagingPage.list.length);
+      }
+      for (let i = 0; i < Num; i++) {
+        pagingPage.list.push({
+          value: i + 1,
+          status: i === 0 ? true : false,
+        });
+      }
+    }
+  });
+};
+getList({ page: 1 });
 
 // 是否开启了操作板块
 const operate = reactive({
@@ -89,15 +176,6 @@ const operate = reactive({
 
 // 选中列表
 const checkedList = reactive([]);
-
-// 分页器相关
-const pagingPage = reactive({
-  list: [],
-  // 每页条数
-  piece_num: 5,
-  // 页数
-  page_num: 1,
-});
 
 const isOpenOperate = () => {
   if (props.tableHead.indexOf("操作") > -1) {
@@ -129,6 +207,18 @@ const getWidth = () => {
     card_item[i].style.width = window.getComputedStyle(item_card[i]).width;
   }
 };
+
+// 获取键值
+const getKeys = (value, index) => {
+  let data = [];
+  if (value.indexOf("id") > -1) {
+    data = value.splice(value.indexOf("id"), 1);
+  } else {
+    data = [...value];
+  }
+  return data;
+};
+
 onMounted(() => {
   getWidth();
 });
@@ -168,11 +258,69 @@ const childCheck = (e, data) => {
   }
 };
 
-// 分页器设置
-const getPageSet = () => {
-  console.log(Math.floor(props.tableData.length / 5) + 1);
+// 切换分页
+const toPage = (value) => {
+  pagingPage.page_num = value;
+  getList({ page: value });
+  if (pagingPage.list.length <= 10) {
+    for (let i = 0; i < pagingPage.list.length; i++) {
+      if (pagingPage.list[i].value === value) {
+        pagingPage.list[i].status = true;
+      } else {
+        pagingPage.list[i].status = false;
+      }
+    }
+  } else {
+    for (let i = 0; i < pagingPage.changeList.length; i++) {
+      if (pagingPage.changeList[i].value === value) {
+        pagingPage.changeList[i].status = true;
+      } else {
+        pagingPage.changeList[i].status = false;
+      }
+    }
+  }
 };
-getPageSet();
+
+// 切换每页条数
+const toPiece = (e) => {
+  if (e.target.value > pagingPage.piece_num) {
+    pagingPage.page_num = 1;
+  }
+  getList({ piece: e.target.value });
+};
+
+// 分页过多处理
+const getPageValue = () => {
+  /**
+   * 省略规则
+   * 第 m * 9个为省略号
+   * 最后一个固定
+   * 前面的向前推进8个
+   */
+  if (pagingPage.list.length % 10 === 0) {
+    pagingPage.key = pagingPage.list.length / 10;
+  } else {
+    pagingPage.key = Math.floor(pagingPage.list.length / 10) + 1;
+  }
+  let data = 0;
+  for (let i = 0; i < 10; i++) {
+    if (i === 9) {
+      pagingPage.changeList.push({
+        value: pagingPage.list[pagingPage.list.length - 1].value,
+        status: false,
+      });
+    } else if (i === 8) {
+      pagingPage.changeList.push({ value: "...", status: false });
+    } else {
+      pagingPage.changeList.push({
+        value: pagingPage.list[i + 8 * data].value,
+        status: false,
+      });
+    }
+  }
+  return [];
+};
+getPageValue();
 
 watch(
   () => props.tableId,
@@ -216,5 +364,17 @@ tr {
 td {
   padding: 0px;
   margin: 0px;
+}
+.page_box {
+  height: 30px;
+  display: flex;
+  margin-top: 10px;
+}
+.page_item {
+  padding: 0px 10px;
+  margin-right: 10px;
+  border: 1px solid #f3f3f3;
+  line-height: 30px;
+  cursor: pointer;
 }
 </style>
