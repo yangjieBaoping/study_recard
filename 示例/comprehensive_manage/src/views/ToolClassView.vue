@@ -111,7 +111,7 @@ const list = reactive({
 });
 
 const getList = () => {
-  for (let i = 0; i < 200; i++) {
+  for (let i = 0; i < 51; i++) {
     list.tBody.push({
       name: `${i + 1}`,
       age: Math.floor(Math.random() * 50 + 10),

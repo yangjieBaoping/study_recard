@@ -56,10 +56,11 @@
     </table>
   </div>
   <div>
-    <div class="page_box" v-if="props.tableData.length > 5">
+    <!-- 分页器 -->
+    <div class="page_box">
       <div v-if="pagingPage.list.length <= 10" style="display: flex">
         <div
-          v-for="(item, index) in pagingPage.list"
+          v-for="item in pagingPage.list"
           :style="{
             color: item.status ? 'rgb(17, 156, 215)' : '#000',
             border: item.status
@@ -128,44 +129,9 @@ const pagingPage = reactive({
   key: 0,
   // 分页过多处理数组
   changeList: [],
+  // 分页器过多时...点击次数
+  click_num: 0,
 });
-
-// 获取
-const getList = (value) => {
-  if (Object.keys(value)[0] === "piece") {
-    pagingPage.piece_num = value[Object.keys(value)[0]];
-  } else {
-    pagingPage.page_num = value[Object.keys(value)[0]];
-  }
-  let arr = props.tableData.slice(
-    (pagingPage.page_num - 1) * pagingPage.piece_num,
-    pagingPage.piece_num * pagingPage.page_num
-  );
-  let Num = 0;
-  if (props.tableData.length % pagingPage.piece_num === 0) {
-    Num = Math.floor(props.tableData.length / pagingPage.piece_num);
-  } else {
-    Num = Math.floor(props.tableData.length / pagingPage.piece_num) + 1;
-  }
-  props.tableData.map((item) => {
-    if (props.tableData.length <= pagingPage.piece_num) {
-      tableLst.data.push(item);
-      pagingPage.list.push({ value: 1, status: true });
-    } else {
-      tableLst.data = [...arr];
-      if (pagingPage.list.length !== 0) {
-        pagingPage.list.splice(0, pagingPage.list.length);
-      }
-      for (let i = 0; i < Num; i++) {
-        pagingPage.list.push({
-          value: i + 1,
-          status: i === 0 ? true : false,
-        });
-      }
-    }
-  });
-};
-getList({ page: 1 });
 
 // 是否开启了操作板块
 const operate = reactive({
@@ -185,6 +151,131 @@ const isOpenOperate = () => {
   }
 };
 isOpenOperate();
+
+// 切换分页
+const toPage = (value) => {
+  console.log(pagingPage.changeList);
+  if (value !== "...") {
+    pagingPage.page_num = value;
+    getList({ page: value });
+    if (pagingPage.list.length <= 10) {
+      for (let i = 0; i < pagingPage.list.length; i++) {
+        if (pagingPage.list[i].value === value) {
+          pagingPage.list[i].status = true;
+        } else {
+          pagingPage.list[i].status = false;
+        }
+      }
+    } else {
+      for (let i = 0; i < pagingPage.changeList.length; i++) {
+        if (pagingPage.changeList[i].value === value) {
+          pagingPage.changeList[i].status = true;
+        } else {
+          pagingPage.changeList[i].status = false;
+        }
+      }
+    }
+  } else {
+    // 拓展分页
+    pagingPage.changeList.splice(0, pagingPage.changeList.length);
+    getPageValue(value);
+  }
+};
+
+// 切换每页条数
+const toPiece = (e) => {
+  if (e.target.value > pagingPage.piece_num) {
+    pagingPage.page_num = 1;
+  }
+  getList({ piece: Number(e.target.value) });
+};
+
+// 分页过多处理
+const getPageValue = (data) => {
+  /**
+   * 省略规则
+   * 第 m * 9个为省略号
+   * 最后一个固定
+   * 前面的向前推进8个
+   */
+  if (!data) {
+    data = 0;
+  }
+  if (pagingPage.list.length % 10 === 0) {
+    pagingPage.key = pagingPage.list.length / 10;
+  } else {
+    pagingPage.key = Math.floor(pagingPage.list.length / 10) + 1;
+  }
+  if (data < pagingPage.key) {
+    for (let i = 0; i < 10; i++) {
+      if (i === 9) {
+        pagingPage.changeList.push({
+          value: pagingPage.list[pagingPage.list.length - 1].value,
+          status: false,
+        });
+      } else if (i === 8) {
+        pagingPage.changeList.push({ value: "...", status: false });
+      } else {
+        pagingPage.changeList.push({
+          value: pagingPage.list[i + 8 * data].value,
+          status: false,
+        });
+      }
+    }
+  } else if (data === pagingPage.key) {
+    let Num = pagingPage.list[pagingPage.list.length - 1].value - 8 * data;
+    pagingPage.changeList.push({ value: "...", status: false });
+    for (let i = 0; i < Num; i++) {
+      pagingPage.changeList.push({ value: 8 * data + i + 1, status: false });
+    }
+  } else {
+    console.log(3);
+    pagingPage.click_num = 0;
+  }
+};
+
+// 获取
+const getList = (value) => {
+  tableLst.data.splice(0, tableLst.data.length);
+  if (Object.keys(value)[0] === "piece") {
+    pagingPage.piece_num = value[Object.keys(value)[0]];
+  } else {
+    pagingPage.page_num = Number(value[Object.keys(value)[0]]);
+  }
+  let arr = props.tableData.slice(
+    (pagingPage.page_num - 1) * pagingPage.piece_num,
+    pagingPage.piece_num * pagingPage.page_num
+  );
+  let Num = 0;
+  if (props.tableData.length % pagingPage.piece_num === 0) {
+    Num = Math.floor(props.tableData.length / pagingPage.piece_num);
+  } else {
+    Num = Math.floor(props.tableData.length / pagingPage.piece_num) + 1;
+  }
+  if (Num === 1) {
+    pagingPage.list = [{ value: 1, status: true }];
+    props.tableData.map((item) => {
+      tableLst.data.push(item);
+    });
+  } else {
+    props.tableData.map(() => {
+      tableLst.data = [...arr];
+      if (pagingPage.list.length !== 0) {
+        pagingPage.list.splice(0, pagingPage.list.length);
+      }
+      for (let i = 0; i < Num; i++) {
+        pagingPage.list.push({
+          value: i + 1,
+          status: i === 0 ? true : false,
+        });
+      }
+    });
+  }
+  if (pagingPage.list.length > 10) {
+    getPageValue();
+  }
+};
+getList({ page: 1 });
 
 // 表格宽度设置
 const getWidth = () => {
@@ -209,14 +300,11 @@ const getWidth = () => {
 };
 
 // 获取键值
-const getKeys = (value, index) => {
-  let data = [];
+const getKeys = (value) => {
   if (value.indexOf("id") > -1) {
-    data = value.splice(value.indexOf("id"), 1);
-  } else {
-    data = [...value];
+    value.splice(value.indexOf("id"), 1);
   }
-  return data;
+  return value;
 };
 
 onMounted(() => {
@@ -257,70 +345,6 @@ const childCheck = (e, data) => {
     }
   }
 };
-
-// 切换分页
-const toPage = (value) => {
-  pagingPage.page_num = value;
-  getList({ page: value });
-  if (pagingPage.list.length <= 10) {
-    for (let i = 0; i < pagingPage.list.length; i++) {
-      if (pagingPage.list[i].value === value) {
-        pagingPage.list[i].status = true;
-      } else {
-        pagingPage.list[i].status = false;
-      }
-    }
-  } else {
-    for (let i = 0; i < pagingPage.changeList.length; i++) {
-      if (pagingPage.changeList[i].value === value) {
-        pagingPage.changeList[i].status = true;
-      } else {
-        pagingPage.changeList[i].status = false;
-      }
-    }
-  }
-};
-
-// 切换每页条数
-const toPiece = (e) => {
-  if (e.target.value > pagingPage.piece_num) {
-    pagingPage.page_num = 1;
-  }
-  getList({ piece: e.target.value });
-};
-
-// 分页过多处理
-const getPageValue = () => {
-  /**
-   * 省略规则
-   * 第 m * 9个为省略号
-   * 最后一个固定
-   * 前面的向前推进8个
-   */
-  if (pagingPage.list.length % 10 === 0) {
-    pagingPage.key = pagingPage.list.length / 10;
-  } else {
-    pagingPage.key = Math.floor(pagingPage.list.length / 10) + 1;
-  }
-  let data = 0;
-  for (let i = 0; i < 10; i++) {
-    if (i === 9) {
-      pagingPage.changeList.push({
-        value: pagingPage.list[pagingPage.list.length - 1].value,
-        status: false,
-      });
-    } else if (i === 8) {
-      pagingPage.changeList.push({ value: "...", status: false });
-    } else {
-      pagingPage.changeList.push({
-        value: pagingPage.list[i + 8 * data].value,
-        status: false,
-      });
-    }
-  }
-  return [];
-};
-getPageValue();
 
 watch(
   () => props.tableId,
