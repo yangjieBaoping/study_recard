@@ -8,13 +8,14 @@
 
 <script setup>
 import { onMounted } from "vue";
-// import { getPie, getLine } from "../utils/echartsCommon";
+// import { getPie, getLine, getData } from "../utils/echartsCommon";
 
 onMounted(() => {
-  //   let pie = document.getElementById("pie");
+    // let pie = document.getElementById("pie");
   //   let line = document.getElementById("line");
   //   getPie(pie);
   //   getLine(line);
+  // getData(pie)
 });
 </script>
 

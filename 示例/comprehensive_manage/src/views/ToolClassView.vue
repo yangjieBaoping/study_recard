@@ -4,6 +4,7 @@
     <select @change="getToolName">
       <option
         v-for="item in toolList"
+        :key="item"
         :value="item.name"
         :label="item.name"
       ></option>
@@ -14,6 +15,7 @@
     <select @change="changeStyle">
       <option
         v-for="item in typeList"
+        :key="item"
         :value="item.name"
         :label="item.name"
       ></option>
@@ -22,6 +24,7 @@
   <!-- 主体 -->
   <div style="width: calc(100vw - 220px); height: calc(100vh - 230px)">
     <CustomTable
+      v-if="someTool.name === '表格'"
       :tableWidth="''"
       :tableHeight="''"
       :tableHead="list.tHead"
@@ -72,6 +75,9 @@ const toolList = reactive([
     ],
   },
 ]);
+
+// 当前工具
+const someTool = reactive({ name: `${toolList[0].name}` })
 
 // 默认为表格的类型
 const typeList = reactive([]);

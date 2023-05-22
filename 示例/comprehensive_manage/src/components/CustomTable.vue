@@ -26,7 +26,7 @@
   <div id="tbody">
     <table style="width: 100%; border-collapse: collapse">
       <tbody>
-        <tr v-for="item in tableLst.data">
+        <tr v-for="item in tableLst.data" :key="item">
           <td
             v-if="props.tableId === 2 || props.tableId === 4"
             class="item_card"
@@ -39,7 +39,8 @@
           </td>
           <td
             class="td_item item_card"
-            v-for="(Item, index) in getKeys(Object.keys(item), index)"
+            v-for="(Item) in getKeys(Object.keys(item))"
+            :key="Item"
           >
             {{ item[Item] }}
           </td>
@@ -61,6 +62,7 @@
       <div v-if="pagingPage.list.length <= 10" style="display: flex">
         <div
           v-for="item in pagingPage.list"
+          :key="item"
           :style="{
             color: item.status ? 'rgb(17, 156, 215)' : '#000',
             border: item.status
@@ -76,6 +78,7 @@
       <div v-else style="display: flex">
         <div
           v-for="item in pagingPage.changeList"
+          :key="item"
           :style="{
             color: item.status ? 'rgb(17, 156, 215)' : '#000',
             border: item.status
@@ -154,7 +157,6 @@ isOpenOperate();
 
 // 切换分页
 const toPage = (value) => {
-  console.log(pagingPage.changeList);
   if (value !== "...") {
     pagingPage.page_num = value;
     getList({ page: value });
@@ -177,8 +179,9 @@ const toPage = (value) => {
     }
   } else {
     // 拓展分页
+    pagingPage.click_num += 1
     pagingPage.changeList.splice(0, pagingPage.changeList.length);
-    getPageValue(value);
+    getPageValue(pagingPage.click_num);
   }
 };
 
@@ -206,7 +209,7 @@ const getPageValue = (data) => {
   } else {
     pagingPage.key = Math.floor(pagingPage.list.length / 10) + 1;
   }
-  if (data < pagingPage.key) {
+  if (data < pagingPage.key - 1) {
     for (let i = 0; i < 10; i++) {
       if (i === 9) {
         pagingPage.changeList.push({
@@ -218,25 +221,26 @@ const getPageValue = (data) => {
       } else {
         pagingPage.changeList.push({
           value: pagingPage.list[i + 8 * data].value,
-          status: false,
+          status: pagingPage.list[i + 8 * data].value === 1 ? true : false,
         });
       }
     }
-  } else if (data === pagingPage.key) {
+  } else if (data === pagingPage.key - 1) {
     let Num = pagingPage.list[pagingPage.list.length - 1].value - 8 * data;
     pagingPage.changeList.push({ value: "...", status: false });
     for (let i = 0; i < Num; i++) {
       pagingPage.changeList.push({ value: 8 * data + i + 1, status: false });
     }
   } else {
-    console.log(3);
     pagingPage.click_num = 0;
+    getPageValue()
   }
 };
 
 // 获取
 const getList = (value) => {
   tableLst.data.splice(0, tableLst.data.length);
+  pagingPage.changeList.splice(0, pagingPage.changeList.length)
   if (Object.keys(value)[0] === "piece") {
     pagingPage.piece_num = value[Object.keys(value)[0]];
   } else {
