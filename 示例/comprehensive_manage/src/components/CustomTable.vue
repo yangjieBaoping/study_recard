@@ -39,7 +39,7 @@
           </td>
           <td
             class="td_item item_card"
-            v-for="(Item) in getKeys(Object.keys(item))"
+            v-for="Item in getKeys(Object.keys(item))"
             :key="Item"
           >
             {{ item[Item] }}
@@ -179,7 +179,7 @@ const toPage = (value) => {
     }
   } else {
     // 拓展分页
-    pagingPage.click_num += 1
+    pagingPage.click_num += 1;
     pagingPage.changeList.splice(0, pagingPage.changeList.length);
     getPageValue(pagingPage.click_num);
   }
@@ -233,16 +233,17 @@ const getPageValue = (data) => {
     }
   } else {
     pagingPage.click_num = 0;
-    getPageValue()
+    getPageValue();
   }
 };
 
 // 获取
 const getList = (value) => {
   tableLst.data.splice(0, tableLst.data.length);
-  pagingPage.changeList.splice(0, pagingPage.changeList.length)
+  pagingPage.changeList.splice(0, pagingPage.changeList.length);
   if (Object.keys(value)[0] === "piece") {
     pagingPage.piece_num = value[Object.keys(value)[0]];
+    pagingPage.page_num = 1;
   } else {
     pagingPage.page_num = Number(value[Object.keys(value)[0]]);
   }

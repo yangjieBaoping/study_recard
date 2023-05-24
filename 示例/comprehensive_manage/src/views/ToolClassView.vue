@@ -14,8 +14,8 @@
     <span style="margin-right: 5px">工具类型：</span>
     <select @change="changeStyle">
       <option
-        v-for="item in typeList"
-        :key="item"
+        v-for="(item, index) in typeList"
+        :key="index"
         :value="item.name"
         :label="item.name"
       ></option>
@@ -31,11 +31,18 @@
       :tableData="list.tBody"
       :tableId="list.tId"
     />
+    <CustomSelect
+      v-if="someTool.name === '选择器'"
+      :selectWidth="''"
+      :selectHeight="''"
+      :select_id="list.selectId"
+    />
   </div>
 </template>
 
 <script setup>
 import CustomTable from "@/components/CustomTable.vue";
+import CustomSelect from "@/components/CustomSelect.vue";
 import { reactive } from "vue";
 
 const toolList = reactive([
@@ -51,12 +58,15 @@ const toolList = reactive([
     type: [
       {
         name: "时间选择器",
+        select_id: 1,
       },
       {
         name: "日期选择器",
+        select_id: 2,
       },
       {
         name: "时间日期选择器",
+        select_id: 3,
       },
     ],
   },
@@ -77,12 +87,21 @@ const toolList = reactive([
 ]);
 
 // 当前工具
-const someTool = reactive({ name: `${toolList[0].name}` })
+const someTool = reactive({ name: `${toolList[0].name}` });
 
 // 默认为表格的类型
 const typeList = reactive([]);
 
+const getType = () => {
+  toolList[0].type.map((item) => {
+    typeList.push(item);
+  });
+};
+
+getType();
+
 const getToolName = (e) => {
+  someTool.name = e.target.value;
   for (let i = 0; i < toolList.length; i++) {
     if (e.target.value == toolList[i].name) {
       typeList.splice(0, typeList.length);
@@ -92,13 +111,6 @@ const getToolName = (e) => {
     }
   }
 };
-
-const getType = () => {
-  toolList[0].type.map((item) => {
-    typeList.push(item);
-  });
-};
-getType();
 
 const changeStyle = (e) => {
   for (let i = 0; i < typeList.length; i++) {
@@ -113,7 +125,9 @@ const list = reactive({
   // 表格
   tHead: ["姓名", "年龄", "时间", "操作"],
   tBody: [],
-  tId: 1,
+  tId: toolList[0].type[0].tId,
+  // 选择器
+  selectId: toolList[1].type[0].select_id,
 });
 
 const getList = () => {
