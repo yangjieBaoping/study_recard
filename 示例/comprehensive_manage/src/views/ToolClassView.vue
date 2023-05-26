@@ -31,18 +31,24 @@
       :tableData="list.tBody"
       :tableId="list.tId"
     />
-    <CustomSelect
-      v-if="someTool.name === '选择器'"
+    <TimeSelect
+      v-if="someTool.name === '选择器' && list.selectId === 1"
       :selectWidth="''"
       :selectHeight="''"
-      :select_id="list.selectId"
+    />
+    <DataSelect
+      v-if="someTool.name === '选择器' && list.selectId === 2"
+      :selectWidth="''"
+      :selectHeight="''"
     />
   </div>
 </template>
 
 <script setup>
 import CustomTable from "@/components/CustomTable.vue";
-import CustomSelect from "@/components/CustomSelect.vue";
+import TimeSelect from "@/components/CustomSelect/TimeSelect.vue";
+import DataSelect from "@/components/CustomSelect/DataSelect.vue";
+
 import { reactive } from "vue";
 
 const toolList = reactive([
@@ -113,9 +119,17 @@ const getToolName = (e) => {
 };
 
 const changeStyle = (e) => {
-  for (let i = 0; i < typeList.length; i++) {
-    if (e.target.value === typeList[i].name) {
-      list.tId = typeList[i].table_id;
+  if (someTool.name === "表格") {
+    for (let i = 0; i < typeList.length; i++) {
+      if (e.target.value === typeList[i].name) {
+        list.tId = typeList[i].table_id;
+      }
+    }
+  } else if (someTool.name === "选择器") {
+    for (let i = 0; i < typeList.length; i++) {
+      if (e.target.value === typeList[i].name) {
+        list.selectId = typeList[i].select_id;
+      }
     }
   }
 };
