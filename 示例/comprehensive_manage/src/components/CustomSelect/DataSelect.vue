@@ -132,6 +132,13 @@ const getNowTime = () => {
   titleTime.month = month;
 };
 getNowTime();
+
+// 改变时间
+const changeTime = () => {
+  console.log(getDay(), "某一天");
+  console.log(setDate());
+};
+changeTime();
 </script>
 
 <style scoped lang="scss">
