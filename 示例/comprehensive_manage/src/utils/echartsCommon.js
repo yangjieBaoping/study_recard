@@ -1,8 +1,8 @@
 // echarts公共组件
 import * as echarts from "echarts";
-import 'echarts/extension/bmap/bmap';
-import { LinesChart } from 'echarts/charts';
-import { CanvasRenderer } from 'echarts/renderers';
+import "echarts/extension/bmap/bmap";
+import { LinesChart } from "echarts/charts";
+import { CanvasRenderer } from "echarts/renderers";
 
 echarts.use([LinesChart, CanvasRenderer]);
 export function getPie(value) {
@@ -74,18 +74,16 @@ export function getLine(value) {
   window.onresize = myChart.resize;
 }
 
-
-export function getData (value) {
-  
+export function getData(value) {
   echarts.use([LinesChart, CanvasRenderer]);
-  
-  var ROOT_PATH = 'https://echarts.apache.org/examples';
+
+  var ROOT_PATH = "https://echarts.apache.org/examples";
   var app = {};
 
   var myChart = echarts.init(value);
   var option;
-  
-  $.get(ROOT_PATH + '/data/asset/data/lines-bus.json', function (data) {
+
+  $.get(ROOT_PATH + "/data/asset/data/lines-bus.json", function (data) {
     let hStep = 300 / (data.length - 1);
     let busLines = [].concat.apply(
       [],
@@ -104,9 +102,12 @@ export function getData (value) {
           coords: points,
           lineStyle: {
             normal: {
-              color: echarts.color.modifyHSL('#5A94DF', Math.round(hStep * idx))
-            }
-          }
+              color: echarts.color.modifyHSL(
+                "#5A94DF",
+                Math.round(hStep * idx)
+              ),
+            },
+          },
         };
       })
     );
@@ -119,131 +120,131 @@ export function getData (value) {
           mapStyle: {
             styleJson: [
               {
-                featureType: 'water',
-                elementType: 'all',
+                featureType: "water",
+                elementType: "all",
                 stylers: {
-                  color: '#031628'
-                }
+                  color: "#031628",
+                },
               },
               {
-                featureType: 'land',
-                elementType: 'geometry',
+                featureType: "land",
+                elementType: "geometry",
                 stylers: {
-                  color: '#000102'
-                }
+                  color: "#000102",
+                },
               },
               {
-                featureType: 'highway',
-                elementType: 'all',
+                featureType: "highway",
+                elementType: "all",
                 stylers: {
-                  visibility: 'off'
-                }
+                  visibility: "off",
+                },
               },
               {
-                featureType: 'arterial',
-                elementType: 'geometry.fill',
+                featureType: "arterial",
+                elementType: "geometry.fill",
                 stylers: {
-                  color: '#000000'
-                }
+                  color: "#000000",
+                },
               },
               {
-                featureType: 'arterial',
-                elementType: 'geometry.stroke',
+                featureType: "arterial",
+                elementType: "geometry.stroke",
                 stylers: {
-                  color: '#0b3d51'
-                }
+                  color: "#0b3d51",
+                },
               },
               {
-                featureType: 'local',
-                elementType: 'geometry',
+                featureType: "local",
+                elementType: "geometry",
                 stylers: {
-                  color: '#000000'
-                }
+                  color: "#000000",
+                },
               },
               {
-                featureType: 'railway',
-                elementType: 'geometry.fill',
+                featureType: "railway",
+                elementType: "geometry.fill",
                 stylers: {
-                  color: '#000000'
-                }
+                  color: "#000000",
+                },
               },
               {
-                featureType: 'railway',
-                elementType: 'geometry.stroke',
+                featureType: "railway",
+                elementType: "geometry.stroke",
                 stylers: {
-                  color: '#08304b'
-                }
+                  color: "#08304b",
+                },
               },
               {
-                featureType: 'subway',
-                elementType: 'geometry',
+                featureType: "subway",
+                elementType: "geometry",
                 stylers: {
-                  lightness: -70
-                }
+                  lightness: -70,
+                },
               },
               {
-                featureType: 'building',
-                elementType: 'geometry.fill',
+                featureType: "building",
+                elementType: "geometry.fill",
                 stylers: {
-                  color: '#000000'
-                }
+                  color: "#000000",
+                },
               },
               {
-                featureType: 'all',
-                elementType: 'labels.text.fill',
+                featureType: "all",
+                elementType: "labels.text.fill",
                 stylers: {
-                  color: '#857f7f'
-                }
+                  color: "#857f7f",
+                },
               },
               {
-                featureType: 'all',
-                elementType: 'labels.text.stroke',
+                featureType: "all",
+                elementType: "labels.text.stroke",
                 stylers: {
-                  color: '#000000'
-                }
+                  color: "#000000",
+                },
               },
               {
-                featureType: 'building',
-                elementType: 'geometry',
+                featureType: "building",
+                elementType: "geometry",
                 stylers: {
-                  color: '#022338'
-                }
+                  color: "#022338",
+                },
               },
               {
-                featureType: 'green',
-                elementType: 'geometry',
+                featureType: "green",
+                elementType: "geometry",
                 stylers: {
-                  color: '#062032'
-                }
+                  color: "#062032",
+                },
               },
               {
-                featureType: 'boundary',
-                elementType: 'all',
+                featureType: "boundary",
+                elementType: "all",
                 stylers: {
-                  color: '#465b6c'
-                }
+                  color: "#465b6c",
+                },
               },
               {
-                featureType: 'manmade',
-                elementType: 'all',
+                featureType: "manmade",
+                elementType: "all",
                 stylers: {
-                  color: '#022338'
-                }
+                  color: "#022338",
+                },
               },
               {
-                featureType: 'label',
-                elementType: 'all',
+                featureType: "label",
+                elementType: "all",
                 stylers: {
-                  visibility: 'off'
-                }
-              }
-            ]
-          }
+                  visibility: "off",
+                },
+              },
+            ],
+          },
         },
         series: [
           {
-            type: 'lines',
-            coordinateSystem: 'bmap',
+            type: "lines",
+            coordinateSystem: "bmap",
             polyline: true,
             data: busLines,
             silent: true,
@@ -251,31 +252,31 @@ export function getData (value) {
               // color: '#c23531',
               // color: 'rgb(200, 35, 45)',
               opacity: 0.2,
-              width: 1
+              width: 1,
             },
             progressiveThreshold: 500,
-            progressive: 200
+            progressive: 200,
           },
           {
-            type: 'lines',
-            coordinateSystem: 'bmap',
+            type: "lines",
+            coordinateSystem: "bmap",
             polyline: true,
             data: busLines,
             lineStyle: {
-              width: 0
+              width: 0,
             },
             effect: {
               constantSpeed: 20,
               show: true,
               trailLength: 0.1,
-              symbolSize: 1.5
+              symbolSize: 1.5,
             },
-            zlevel: 1
-          }
-        ]
+            zlevel: 1,
+          },
+        ],
       })
     );
   });
-  
+
   option && myChart.setOption(option);
 }

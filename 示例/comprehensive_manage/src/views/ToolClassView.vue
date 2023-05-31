@@ -41,6 +41,16 @@
       :selectWidth="''"
       :selectHeight="''"
     />
+    <UploadImg
+      v-if="someTool.name === '文件上传' && list.fileId === 1"
+      :uploadWidth="''"
+      :uploadHeight="''"
+    />
+    <UploadExcel
+      v-if="someTool.name === '文件上传' && list.fileId === 2"
+      :uploadWidth="''"
+      :uploadHeight="''"
+    />
   </div>
 </template>
 
@@ -48,6 +58,8 @@
 import CustomTable from "@/components/CustomTable.vue";
 import TimeSelect from "@/components/CustomSelect/TimeSelect.vue";
 import DataSelect from "@/components/CustomSelect/DataSelect.vue";
+import UploadImg from "@/components/UploadFile/UploadImg.vue";
+import UploadExcel from "@/components/UploadFile/UploadExcel.vue";
 
 import { reactive } from "vue";
 
@@ -81,12 +93,15 @@ const toolList = reactive([
     type: [
       {
         name: "图片上传",
+        file_id: 1,
       },
       {
         name: "表格，文档上传",
+        file_id: 2,
       },
       {
         name: "音视频上传",
+        file_id: 3,
       },
     ],
   },
@@ -131,6 +146,12 @@ const changeStyle = (e) => {
         list.selectId = typeList[i].select_id;
       }
     }
+  } else if (someTool.name === "文件上传") {
+    for (let i = 0; i < typeList.length; i++) {
+      if (e.target.value === typeList[i].name) {
+        list.fileId = typeList[i].file_id;
+      }
+    }
   }
 };
 
@@ -142,6 +163,7 @@ const list = reactive({
   tId: toolList[0].type[0].tId,
   // 选择器
   selectId: toolList[1].type[0].select_id,
+  fileId: toolList[2].type[0].file_id,
 });
 
 const getList = () => {

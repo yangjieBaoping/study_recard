@@ -206,11 +206,6 @@ const sureTime = (e) => {
   timesStatus.hours_minute = false;
 };
 
-// 移入移出
-const getmous = (value) => {
-  timesStatus.clear_btn = value;
-};
-
 // 关闭
 const eliminate_btn = () => {
   timesStatus.clear_btn = false;
@@ -223,7 +218,6 @@ const eliminate_btn = () => {
   display: flex;
   border: 1px solid #f3f3f3;
   border-radius: 10px;
-
   .img_box {
     width: 30px;
     height: 30px;
