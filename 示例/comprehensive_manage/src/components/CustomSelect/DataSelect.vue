@@ -7,18 +7,20 @@
   >
     <input
       type="text"
-      @focus="timesStatus.status = true"
-      @blur="timesStatus.status = false"
+      @click="opData"
       placeholder="选择日期"
+      v-model="titleTime.nowTime"
     />
     <div
       style="margin-top: 10px; padding: 10px; border: 1px solid #666"
       :style="{
         width: props.selectWidth ? props.selectWidth + 100 : '300px',
       }"
+      v-if="timesStatus.status"
     >
       <div id="look_year">
         <svg
+          @click="addYear(false)"
           t="1685091696133"
           class="icon"
           viewBox="0 0 1024 1024"
@@ -35,6 +37,7 @@
           ></path>
         </svg>
         <svg
+          @click="addMonth(false)"
           style="margin-left: 10px"
           t="1685091725565"
           class="icon"
@@ -52,14 +55,18 @@
           ></path>
         </svg>
         <div style="flex: 1; text-align: center">
-          <span class="change_color" style="margin-right: 10px; cursor: pointer"
+          <span
+            class="change_color"
+            style="margin-right: 10px; cursor: pointer"
+            @click="getYear"
             >{{ titleTime.year }}年</span
           >
-          <span class="change_color" style="cursor: pointer"
+          <span class="change_color" style="cursor: pointer" @click="getMonth"
             >{{ titleTime.month }}月</span
           >
         </div>
         <svg
+          @click="addMonth(true)"
           style="margin-right: 10px"
           t="1685091771600"
           class="icon"
@@ -77,6 +84,7 @@
           ></path>
         </svg>
         <svg
+          @click="addYear(true)"
           t="1685091754287"
           class="icon"
           viewBox="0 0 1024 1024"
@@ -93,13 +101,53 @@
           ></path>
         </svg>
       </div>
-      <div style="margin-top: 20px; display: flex">
+      <div style="margin-top: 20px">
+        <div v-if="timesStatus.data_status">
+          <div style="display: flex">
+            <div
+              style="flex: 1; user-select: none; text-align: center"
+              v-for="item in timesStatus.week"
+              :key="item"
+            >
+              {{ item }}
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(7, 1fr)">
+            <div
+              v-for="item in timesStatus.dayList"
+              :key="item"
+              style="text-align: center; cursor: pointer"
+              @click="sureDate(item)"
+            >
+              {{ item.value }}
+            </div>
+          </div>
+        </div>
         <div
-          style="flex: 1; user-select: none; text-align: center"
-          v-for="item in timesStatus.week"
-          :key="item"
+          v-if="timesStatus.year_status"
+          style="display: grid; grid-template-columns: repeat(4, 1fr)"
         >
-          {{ item }}
+          <div
+            v-for="item in 10"
+            :key="item"
+            style="text-align: center; cursor: pointer"
+            @click="sureYear(titleTime.year + item)"
+          >
+            {{ titleTime.year + item }}
+          </div>
+        </div>
+        <div
+          v-if="timesStatus.month_status"
+          style="display: grid; grid-template-columns: repeat(4, 1fr)"
+        >
+          <div
+            v-for="item in 12"
+            :key="item"
+            style="text-align: center; cursor: pointer"
+            @click="sureMonth(item)"
+          >
+            {{ item }}
+          </div>
         </div>
       </div>
     </div>
@@ -117,30 +165,151 @@ const props = defineProps({
 const titleTime = reactive({
   year: "",
   month: "",
+  nowTime: "",
 });
 
 const timesStatus = reactive({
   status: false,
-  week: ["日", "一", "二", "三", "四", "五", "六"],
+  year_status: false,
+  month_status: false,
+  data_status: false,
+  week: ["一", "二", "三", "四", "五", "六", "日"],
+  dayList: [],
 });
+
+// 获取某个月份第一天和最后一天
+const getAllData = (year, month) => {
+  let frist_day = new Date(year, month, 1);
+  let end_day = new Date(year, month + 1, 0);
+  let arr = [];
+  arr.push({
+    frist: new Date(frist_day).getDay(),
+    end: new Date(end_day).getDay(),
+    day: new Date(end_day).getDate(),
+  });
+  return arr;
+};
+
+// 改变时间
+const changeTime = (year, month) => {
+  timesStatus.dayList = [];
+  let now_month = getAllData(year, month);
+  let previous_month = getAllData(year, month - 1);
+  if (now_month[0].frist === 1) {
+    for (let i = 0; i < now_month[0].day; i++) {
+      timesStatus.dayList.push({
+        value: i + 1,
+        status: "now",
+      });
+    }
+    let Num = 42 - now_month[0].day;
+    for (let i = 0; i < Num; i++) {
+      timesStatus.dayList.push({
+        value: i + 1,
+        status: "last",
+      });
+    }
+  } else {
+    for (let i = 0; i < now_month[0].frist - 1; i++) {
+      timesStatus.dayList.unshift({
+        value: previous_month[0].day - i,
+        status: "previous",
+      });
+    }
+    for (let i = 0; i < now_month[0].day; i++) {
+      timesStatus.dayList.push({
+        value: i + 1,
+        status: "now",
+      });
+    }
+    if (timesStatus.dayList.length < 42) {
+      let Num = 42 - timesStatus.dayList.length;
+      for (let i = 0; i < Num; i++) {
+        timesStatus.dayList.push({
+          value: i + 1,
+          status: "last",
+        });
+      }
+    }
+  }
+};
 
 // 获取当前时间
 const getNowTime = () => {
   let year = new Date().getFullYear();
-  let month = new Date().getMonth() + 1;
-  let day = new Date().getDate();
+  let month = new Date().getMonth();
   titleTime.year = year;
-  titleTime.month = month;
+  titleTime.month = month + 1;
+  changeTime(year, month);
 };
 getNowTime();
 
-// 改变时间
-const changeTime = () => {
-  let data = new Date()
-  console.log(data.getDay(), "某一天");
-  console.log(data.setDate());
+// 修改月份
+const addMonth = (status) => {
+  if (status) {
+    titleTime.month += 1;
+    if (titleTime.month > 12) {
+      titleTime.month = 1;
+      titleTime.year += 1;
+    }
+  } else {
+    titleTime.month -= 1;
+    if (titleTime.month < 1) {
+      titleTime.month = 12;
+      titleTime.year -= 1;
+    }
+  }
+  changeTime(titleTime.year, titleTime.month - 1);
 };
-changeTime();
+const addYear = (status) => {
+  if (status) {
+    titleTime.year += 1;
+  } else {
+    titleTime.year -= 1;
+  }
+  changeTime(titleTime.year, titleTime.month - 1);
+};
+
+// 选中时间
+const sureDate = (data) => {
+  let M = titleTime.month;
+  if (data.status === "previous") {
+    M = M - 1;
+  } else if (data.status === "last") {
+    M = M + 1;
+  }
+  titleTime.nowTime = `${titleTime.year}-${M}-${data.value}`;
+  timesStatus.data_status = false;
+  timesStatus.status = false;
+  changeTime(titleTime.year, titleTime.month - 1);
+};
+
+const sureYear = (value) => {
+  titleTime.year = value;
+  timesStatus.year_status = false;
+  timesStatus.month_status = true;
+};
+
+const sureMonth = (value) => {
+  titleTime.month = value;
+  timesStatus.month_status = false;
+  timesStatus.data_status = true;
+};
+
+const opData = () => {
+  timesStatus.status = true;
+  timesStatus.data_status = true;
+};
+const getYear = () => {
+  timesStatus.year_status = true;
+  timesStatus.month_status = false;
+  timesStatus.data_status = false;
+};
+const getMonth = () => {
+  timesStatus.year_status = false;
+  timesStatus.month_status = true;
+  timesStatus.data_status = false;
+};
 </script>
 
 <style scoped lang="scss">
