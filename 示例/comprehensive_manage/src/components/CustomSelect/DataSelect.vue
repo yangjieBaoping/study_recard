@@ -97,6 +97,7 @@
         <div
           style="flex: 1; user-select: none; text-align: center"
           v-for="item in timesStatus.week"
+          :key="item"
         >
           {{ item }}
         </div>
@@ -135,8 +136,9 @@ getNowTime();
 
 // 改变时间
 const changeTime = () => {
-  console.log(getDay(), "某一天");
-  console.log(setDate());
+  let data = new Date()
+  console.log(data.getDay(), "某一天");
+  console.log(data.setDate());
 };
 changeTime();
 </script>

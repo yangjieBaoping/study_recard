@@ -113,6 +113,25 @@ onMounted(() => {
         case 'top': this.body[0].y -= 1; break
         case 'down': this.body[0].y += 1; break
       }
+
+      // 吃到食物——蛇头位置与食物重合
+      if (this.body[0].x === food.x && this.body[0].y === food.y) {
+        // 根据最后原理
+        this.body.push({x: null,y: null, flag:null })
+        map.canvas.removeChild(food.flag)
+        food = new Food(map)
+      }
+
+      // 判断是否出界
+      if (this.body[0].x < 0 ||
+      this.body[0].x > map.xauto - 1 ||
+      this.body[0].y < 0 ||
+      this.body[0].y > map.yauto - 1) {
+        console.log(1);
+      }
+
+      // 判断是否吃到自己
+
       // 清除原来的蛇
       for (let i = 0; i < this.body.length; i++) {
         if (this.body[i].flag !== null) {
@@ -126,20 +145,29 @@ onMounted(() => {
   var map = new Map(20,40,20)
   map.createMap()
   var food = new Food(map)
-  console.log(food);
   var snake = new Snake(map)
   snake.display()
 
 // 键盘事件
 window.onkeydown = function(e) {
   switch(e.keyCode) {
-    case 87: snake.direction = 'top'; break;
-    case 68: snake.direction = 'right'; break;
-    case 83: snake.direction = 'down'; break;
-    case 65: snake.direction = 'left'; break;
-
+    case 87: if (snake.direction !== 'down') {
+      snake.direction = 'top';
+      snake.snakeRun()
+    } break;
+    case 68: if (snake.direction !== 'left') {
+      snake.direction = 'right';
+      snake.snakeRun()
+    } break;
+    case 83: if (snake.direction !== 'top') {
+      snake.direction = 'down';
+      snake.snakeRun()
+    } break;
+    case 65: if (snake.direction !== 'right') {
+      snake.direction = 'left';
+      snake.snakeRun()
+    } break;
   }
-  snake.snakeRun()
 }
 
   document.getElementById('btnFun').addEventListener('click', function(e){
@@ -151,8 +179,6 @@ window.onkeydown = function(e) {
     }
   })
 })
-console.log(1)
-console.log('1');
 
 </script>
 
