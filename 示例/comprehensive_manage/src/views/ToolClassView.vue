@@ -51,6 +51,7 @@
       :uploadWidth="''"
       :uploadHeight="''"
     />
+    <CountInstrument v-if="someTool.name === '计算器'" />
   </div>
 </template>
 
@@ -60,6 +61,7 @@ import TimeSelect from "@/components/CustomSelect/TimeSelect.vue";
 import DataSelect from "@/components/CustomSelect/DataSelect.vue";
 import UploadImg from "@/components/UploadFile/UploadImg.vue";
 import UploadExcel from "@/components/UploadFile/UploadExcel.vue";
+import CountInstrument from "@/components/CountInstrument.vue";
 
 import { reactive } from "vue";
 
@@ -104,6 +106,9 @@ const toolList = reactive([
         file_id: 3,
       },
     ],
+  },
+  {
+    name: "计算器",
   },
 ]);
 
