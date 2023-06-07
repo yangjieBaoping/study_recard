@@ -3,31 +3,61 @@
     <input type="text" id="count_result" />
   </div>
   <div class="count_box">
-    <div v-for="item in 9" @click="getCount">{{ item }}</div>
-    <div @click="jiaCount">+</div>
-    <div @click="jianCount">-</div>
-    <div @click="shenCount">*</div>
-    <div @click="chuCount">/</div>
+    <div
+      v-for="item in 10"
+      style="text-align: center; cursor: pointer"
+      @click="getCount"
+    >
+      {{ item - 1 }}
+    </div>
+    <div style="cursor: pointer; user-select: none" @click="jiaCount">+</div>
+    <div style="cursor: pointer; user-select: none" @click="jianCount">-</div>
+    <div style="cursor: pointer; user-select: none" @click="shenCount">*</div>
+    <div style="cursor: pointer; user-select: none" @click="chuCount">/</div>
+    <div style="cursor: pointer; user-select: none" @click="dengyuCount">=</div>
   </div>
 </template>
 
 <script setup>
 import { reactive } from "vue";
-const countList = reactive([]);
+
+// 计算盒子
+const countBox = reactive({
+  value: 0,
+});
 
 const getCount = (e) => {
   let countResult = document.getElementById("count_result");
-  let data = e.target.value;
-  if (data) {
-    countResult.innerText = data;
-  }
+  let data = e.target.innerText;
+  countResult.value += data;
 };
 
 // 计算
-const jiaCount = () => {};
-const jianCount = () => {};
-const shenCount = () => {};
-const chuCount = () => {};
+const jiaCount = () => {
+  let countResult = document.getElementById("count_result");
+  countResult.value += "+";
+};
+const jianCount = () => {
+  let countResult = document.getElementById("count_result");
+  countResult.value += "-";
+};
+const shenCount = () => {
+  let countResult = document.getElementById("count_result");
+  countResult.value += "*";
+};
+const chuCount = () => {
+  let countResult = document.getElementById("count_result");
+  countResult.value += "/";
+};
+const dengyuCount = () => {
+  let countResult = document.getElementById("count_result");
+  // 已计算的值
+  console.log(countBox.value);
+  // 最后输入的值
+  console.log(countResult.value);
+  // countResult.value = "";
+  // countResult.value = countBox.value;
+};
 </script>
 
 <style scoped lang="scss">
@@ -38,5 +68,6 @@ input {
   display: grid;
   grid-template-columns: repeat(4, 2fr);
   grid-gap: 10px;
+  width: 100px;
 }
 </style>

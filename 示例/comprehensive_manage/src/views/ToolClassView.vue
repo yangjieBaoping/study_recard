@@ -109,6 +109,7 @@ const toolList = reactive([
   },
   {
     name: "计算器",
+    type: [],
   },
 ]);
 
