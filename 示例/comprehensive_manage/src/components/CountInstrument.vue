@@ -24,44 +24,51 @@ import { reactive } from "vue";
 // 计算盒子
 const countBox = reactive({
   value: 0,
-  btnStatus: "",
 });
 
 const getCount = (e) => {
   let countResult = document.getElementById("count_result");
   let data = e.target.innerText;
-  if (countBox.btnStatus !== "") {
-    if (countBox.btnStatus === "+") {
-      countResult.value = Number(countResult.value) + Number(data);
-    } else if (countBox.btnStatus === "-") {
-      countResult.value = Number(countResult.value) - Number(data);
-    } else if (countBox.btnStatus === "*") {
-      countResult.value = Number(countResult.value) * Number(data);
-    } else {
-      countResult.value = Number(countResult.value) / Number(data);
-    }
-  } else {
-    countResult.value += data;
-  }
+  countResult.value += data;
 };
 
 // 计算
 const jiaCount = () => {
-  countBox.btnStatus = "+";
+  let countResult = document.getElementById("count_result");
+  countResult.value += "+";
 };
 const jianCount = () => {
-  countBox.btnStatus = "-";
+  let countResult = document.getElementById("count_result");
+  countResult.value += "-";
 };
 const shenCount = () => {
-  countBox.btnStatus = "*";
+  let countResult = document.getElementById("count_result");
+  countResult.value += "*";
 };
 const chuCount = () => {
-  countBox.btnStatus = "/";
+  let countResult = document.getElementById("count_result");
+  countResult.value += "/";
 };
 const dengyuCount = () => {
   let countResult = document.getElementById("count_result");
   // 最后输入的值
-  console.log(countResult.value);
+  // *->/->+->-
+  for (let i = 0; i < countResult.value.length; i++) {
+    let data = countResult.value[i];
+    if (data === "+") {
+      if (i - 2 !== "+" || i + 2 !== "+") {
+      }
+    } else if (data === "-") {
+      if (i - 2 !== "-" || i + 2 !== "-") {
+      }
+    } else if (data === "*") {
+      if (i - 2 !== "*" || i + 2 !== "*") {
+      }
+    } else {
+      if (i - 2 !== "/" || i + 2 !== "/") {
+      }
+    }
+  }
 };
 </script>
 
