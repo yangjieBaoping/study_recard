@@ -30,6 +30,21 @@ const getCount = (e) => {
   let countResult = document.getElementById("count_result");
   let data = e.target.innerText;
   countResult.value += data;
+  if (countResult.value.length >= 2) {
+    let data = countResult.value[countResult.value.length - 1];
+    if (isNaN(Number(data))) {
+      let arr = countResult.value.split(data);
+      if (data === "+") {
+        countResult.value = arr[0] + arr[1];
+      } else if (data === "-") {
+        countResult.value = arr[0] - arr[1];
+      } else if (data === "*") {
+        countResult.value = arr[0] * arr[1];
+      } else {
+        countResult.value = arr[0] / arr[1];
+      }
+    }
+  }
 };
 
 // 计算
@@ -51,24 +66,6 @@ const chuCount = () => {
 };
 const dengyuCount = () => {
   let countResult = document.getElementById("count_result");
-  // 最后输入的值
-  // *->/->+->-
-  for (let i = 0; i < countResult.value.length; i++) {
-    let data = countResult.value[i];
-    if (data === "+") {
-      if (i - 2 !== "+" || i + 2 !== "+") {
-      }
-    } else if (data === "-") {
-      if (i - 2 !== "-" || i + 2 !== "-") {
-      }
-    } else if (data === "*") {
-      if (i - 2 !== "*" || i + 2 !== "*") {
-      }
-    } else {
-      if (i - 2 !== "/" || i + 2 !== "/") {
-      }
-    }
-  }
 };
 </script>
 
