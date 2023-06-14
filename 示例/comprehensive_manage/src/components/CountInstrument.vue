@@ -30,38 +30,30 @@ const getCount = (e) => {
   let countResult = document.getElementById("count_result");
   let data = e.target.innerText;
   countResult.value += data;
-  if (countResult.value.length >= 2) {
-    let data = countResult.value[countResult.value.length - 1];
-    if (isNaN(Number(data))) {
-      let arr = countResult.value.split(data);
-      if (data === "+") {
-        countResult.value = arr[0] + arr[1];
-      } else if (data === "-") {
-        countResult.value = arr[0] - arr[1];
-      } else if (data === "*") {
-        countResult.value = arr[0] * arr[1];
-      } else {
-        countResult.value = arr[0] / arr[1];
-      }
-    }
-  }
 };
 
 // 计算
 const jiaCount = () => {
   let countResult = document.getElementById("count_result");
+  console.log(countResult.value);
+  if (countResult.value[countResult.value]) {
+    console.log(1);
+  }
   countResult.value += "+";
 };
 const jianCount = () => {
   let countResult = document.getElementById("count_result");
+  console.log(countResult.value);
   countResult.value += "-";
 };
 const shenCount = () => {
   let countResult = document.getElementById("count_result");
+  console.log(countResult.value);
   countResult.value += "*";
 };
 const chuCount = () => {
   let countResult = document.getElementById("count_result");
+  console.log(countResult.value);
   countResult.value += "/";
 };
 const dengyuCount = () => {
