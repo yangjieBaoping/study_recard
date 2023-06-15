@@ -1,6 +1,6 @@
-html,body,#app{
-  margin: 0px;
-  padding: 0px;
+*{
+  margin: 0;
+  padding: 0;
 }
 
 // 蒙层样式
@@ -16,6 +16,9 @@ html,body,#app{
   align-items: center;
   z-index: 10;
 }
+.content_width{
+  width: 100vw;
+}
 .prop_width{
   width: 80%;
 }
@@ -26,7 +29,7 @@ html,body,#app{
     width: 340px;
     margin: auto;
   }
-  // 弹窗宽度
+  // 通用弹窗宽度
   .prop_width{
     width: 280px;
   }

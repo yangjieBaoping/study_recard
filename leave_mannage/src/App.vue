@@ -1,7 +1,7 @@
 <template>
   <div v-if="pageStatus.status">
     <router-view />
-    <publicProp v-if="$store.state.allPropStatus.publicDataStatus" />
+    <publicProp v-if="$store.state.PublicData.value" />
   </div>
 </template>
 
