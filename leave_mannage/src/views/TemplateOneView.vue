@@ -71,37 +71,86 @@
           </div>
         </div>
       </div>
-      <!-- <useFullService v-if="$store.state.allPropStatus.useFullServiceStatus" /> -->
     </div>
     <div v-else>2</div>
   </div>
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { useStore } from "vuex";
 import homePageHeader from "@/components/oneModle/homePageHeader.vue";
 import homePageSearchExqrie from "@/components/oneModle/homePageSearchExqrie.vue";
 import homePageList from "@/components/oneModle/homePageList.vue";
+import { HOST } from "@/ENV";
+import { useRoute } from "vue-router";
+
 const $store = new useStore();
+const $route = new useRoute();
 
 const assemblyStatus = reactive({
   homeStatus: true,
 });
 
+const searchValue = ref("");
+
 // 父组件向子组件传递的数据
 const transferData = reactive({
   pernum: 0,
   listObj: {
-    list: [],
+    // 列表数据
+    list: {},
+    // 判断是加载数据还是搜索数据
+    // true为加载,反之搜索
     status: false,
+    // 滚动次数
     number: 0,
   },
 });
 
 const scrollEvent = async (e) => {
-  console.log(e);
+  if (e.currentTarget.scrollTop > 150 * (transferData.listObj.number * 5)) {
+    transferData.listObj.number += 1;
+    transferData.listObj.status = true;
+  }
 };
+
+// 搜索功能
+const debounce = () => {
+  let timeout = null;
+  return function () {
+    if (timeout !== null) clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      getValue();
+    }, 1000);
+  };
+};
+async function getValue() {
+  if (searchValue._value.value === "") {
+    transferData.listObj.list = {};
+    transferData.listObj.status = true;
+    transferData.listObj.number = 0;
+  }
+  let result = await fetch(
+    `${HOST}/searchvotetarget/?vote_id=${$route.query.vote_id}&key=${searchValue._value.value}`,
+    {
+      method: "get",
+    }
+  )
+    .then((res) => res.json())
+    .then((data) => data);
+  if (result.code === 200) {
+    transferData.listObj.list = {
+      ...result,
+      searchKey: searchValue._value.value,
+    };
+    transferData.listObj.status = false;
+    transferData.listObj.number = 0;
+  } else {
+    $store.commit("chengePublicData", result.msg);
+  }
+}
+const getFocus = debounce();
 </script>
 
 <style scoped lang="scss">
