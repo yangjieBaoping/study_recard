@@ -15,6 +15,7 @@
 
 <script setup>
 import { reactive } from "vue";
+import { getLine } from "@/utils/cancas";
 
 const canvasList = reactive([
   { name: "直线", id: "1" },
@@ -26,7 +27,13 @@ const canvasList = reactive([
 ]);
 
 const getValue = (e) => {
-  console.log(e.target.value);
+  let canvas = document.getElementById("canvas");
+  let ctx = canvas.getContext("2d");
+  if (e.target.value === "1") {
+    getLine(ctx);
+  }
+  // console.log(canvas);
+  // console.log(e.target.value);
 };
 </script>
 
