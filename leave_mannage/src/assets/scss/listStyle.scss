@@ -1,0 +1,119 @@
+.list_item {
+  height: 150px;
+  background-repeat: no-repeat;
+  background-size: 114% 128%;
+  background-position: 41% 50%;
+  margin-top: 20px;
+  position: relative;
+}
+.list_item_name {
+  position: absolute;
+  height: 30px;
+  line-height: 30px;
+  padding-left: 15px;
+  width: calc(100% - 80px);
+  top: 5px;
+  left: 60px;
+  font-size: 20px;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-weight: bolder;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.list_item_name_background1 {
+  background-image: linear-gradient(
+    to right,
+    rgba(239, 208, 162, 1.328),
+    rgba(255, 255, 255, 0)
+  );
+  backdrop-filter: blur(10px);
+}
+.list_item_name_background2 {
+  background-image: linear-gradient(
+    to right,
+    rgba(193, 196, 234, 1.328),
+    rgba(255, 255, 255, 0)
+  );
+  backdrop-filter: blur(10px);
+}
+.list_item_name_background3 {
+  background-image: linear-gradient(
+    to right,
+    rgba(236, 183, 163, 1.328),
+    rgba(255, 255, 255, 0)
+  );
+  backdrop-filter: blur(10px);
+}
+.list_rank {
+  width: 45px;
+  position: absolute;
+  text-align: center;
+  z-index: 2;
+  line-height: 75px;
+  font-size: 20px;
+}
+// 绘制倒三角型
+.list_rank_green {
+  position: absolute;
+  z-index: 5;
+  top: -3px;
+  left: 10px;
+  font-size: 14px;
+  .list_rank_green1 {
+    width: 40px;
+    height: 15px;
+    line-height: 22px;
+    background-color: green;
+    text-align: center;
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    font-weight: bold;
+    color: #ffffff;
+  }
+  .list_rank_green2 {
+    width: 0px;
+    height: 0px;
+    border-top: 10px solid green;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 10px solid transparent;
+  }
+}
+.list_content {
+  width: calc(100% - 20px);
+  padding: 0px 10px;
+  position: absolute;
+  top: 50px;
+  height: 100px;
+  display: flex;
+}
+.list_content_noimg {
+  width: 100%;
+  height: 78px;
+  border: 1px solid #000;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  font-weight: bolder;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.list_content_btn {
+  max-width: 90px;
+  width: 25%;
+  height: 90px;
+  background-size: 100% 100%;
+}
+.list_content_btn_name {
+  padding: 5px;
+  font-weight: bolder;
+  font-size: 16px;
+  border-radius: 5px;
+  text-align: center;
+  color: #ffffff;
+  background-color: rgb(143, 85, 235);
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  margin-top: 30px;
+}

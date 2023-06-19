@@ -52,6 +52,7 @@
       :uploadHeight="''"
     />
     <CountInstrument v-if="someTool.name === '计算器'" />
+    <CanvasRead v-if="someTool.name === '画布'" />
   </div>
 </template>
 
@@ -62,6 +63,7 @@ import DataSelect from "@/components/CustomSelect/DataSelect.vue";
 import UploadImg from "@/components/UploadFile/UploadImg.vue";
 import UploadExcel from "@/components/UploadFile/UploadExcel.vue";
 import CountInstrument from "@/components/CountInstrument.vue";
+import CanvasRead from "@/components/CanvasRead.vue";
 
 import { reactive } from "vue";
 
@@ -109,6 +111,10 @@ const toolList = reactive([
   },
   {
     name: "计算器",
+    type: [],
+  },
+  {
+    name: "画布",
     type: [],
   },
 ]);

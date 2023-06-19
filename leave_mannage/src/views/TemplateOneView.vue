@@ -73,7 +73,7 @@
       </div>
     </div>
     <div v-else>2</div>
-    <Index />
+    <Index :Element="transferData.key" />
   </div>
 </template>
 
@@ -108,6 +108,7 @@ const transferData = reactive({
     // 滚动次数
     number: 0,
   },
+  key: 0,
 });
 
 const scrollEvent = async (e) => {
