@@ -155,6 +155,24 @@ const listImg = reactive({
 const informationData = reactive([]);
 const rankingList = reactive([]);
 
+// const getRank = async () => {
+//   rankingList.splice(0, rankingList.length);
+//   let ranklist = await fether(
+//     `/votetargetrank/?vote_id=${$route.query.vote_id}`
+//   );
+//   ranklist.map((item) => {
+//     rankingList.push(item);
+//   });
+//   rankingList.sort((a, b) => {
+//     return b.count - a.count;
+//   });
+//   rankingList.sort((a, b) => {
+//     if (a.count === b.count) {
+//       return a.pk - b.pk;
+//     }
+//   });
+// };
+
 //获取选手列表
 const getInformation = async (value, data) => {
   if (value > pageValue.value) return;
@@ -170,7 +188,6 @@ const getInformation = async (value, data) => {
     .then((res) => res.json())
     .then((data) => {
       if (data.code === 200) {
-        console.log(111);
         pageValue.value = data.page_count;
         JSON.parse(data.data).map((item, index) => {
           informationData.push({
@@ -185,29 +202,8 @@ const getInformation = async (value, data) => {
 };
 getInformation(1);
 
-const getRank = async () => {
-  let ranklist = await fether(
-    `/votetargetrank/?vote_id=${$route.query.vote_id}`
-  );
-  ranklist.map((item) => {
-    rankingList.push(item);
-  });
-  rankingList.sort((a, b) => {
-    return b.count - a.count;
-  });
-  rankingList.sort((a, b) => {
-    if (a.count === b.count) {
-      return a.pk - b.pk;
-    }
-  });
-  console.log(222);
-  console.log(rankingList);
-};
-getRank();
-
 // 设置排名
 const setRank = async () => {
-  console.log(rankingList);
   informationData.map((Item) => {
     rankingList.map((item, index) => {
       if (Item.pk === item.pk) {

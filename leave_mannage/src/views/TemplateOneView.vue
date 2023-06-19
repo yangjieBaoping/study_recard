@@ -73,6 +73,7 @@
       </div>
     </div>
     <div v-else>2</div>
+    <Index />
   </div>
 </template>
 
@@ -82,6 +83,7 @@ import { useStore } from "vuex";
 import homePageHeader from "@/components/oneModle/homePageHeader.vue";
 import homePageSearchExqrie from "@/components/oneModle/homePageSearchExqrie.vue";
 import homePageList from "@/components/oneModle/homePageList.vue";
+import Index from "@/components/oneModle/index.vue";
 import { HOST } from "@/ENV";
 import { useRoute } from "vue-router";
 
