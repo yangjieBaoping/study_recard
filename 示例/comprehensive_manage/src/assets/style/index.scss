@@ -1,7 +1,9 @@
-*{
+* {
   box-sizing: border-box;
 }
-html,body,#app{
+html,
+body,
+#app {
   width: 100vw;
   height: 100vh;
   margin: 0;
@@ -9,16 +11,16 @@ html,body,#app{
 }
 
 // 清除滚动条
-.clear_scroll::-webkit-scrollbar{
-    display: none;
+.clear_scroll::-webkit-scrollbar {
+  display: none;
 }
 
 // 公共标题
-.common_title{
-    height: 30px;
-    line-height: 30px;
-    font-size: 26px;
-    font-weight: bolder;
-    color: #000;
-    margin: 10px 0px;
+.common_title {
+  height: 30px;
+  line-height: 30px;
+  font-size: 26px;
+  font-weight: bolder;
+  color: #000;
+  margin: 10px 0px;
 }
