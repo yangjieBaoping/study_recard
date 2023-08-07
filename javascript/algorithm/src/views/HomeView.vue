@@ -8,6 +8,7 @@
       <PrimeNumver v-if="selectValue.value === 2" />
       <Fibonacci v-if="selectValue.value === 3" />
       <CommonDivisor v-if="selectValue.value === 4" />
+      <ArrayRemove v-if="selectValue.value === 5" />
     </div>
   </div>
 </template>
@@ -18,11 +19,14 @@ import MultiplicationTable from '@/components/MultiplicationTable.vue'
 import PrimeNumver from '@/components/PrimeNumver.vue'
 import Fibonacci from '@/components/Fibonacci.vue'
 import CommonDivisor from '@/components/CommonDivisor.vue'
+import ArrayRemove from '@/components/ArrayRemove.vue'
+
 const selectData = reactive([
   { value: '九九乘法表', id: 1 },
   { value: '判断是否为素数', id: 2 },
   { value: '斐波那契', id: 3 },
   { value: '最大公约数', id: 4 },
+  { value: '数组去重', id: 5 },
 ])
 
 const selectValue = reactive({
