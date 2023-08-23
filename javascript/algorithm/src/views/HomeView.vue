@@ -10,6 +10,7 @@
       <CommonDivisor v-if="selectValue.value === 4" />
       <ArrayRemove v-if="selectValue.value === 5" />
       <VariousSort v-if="selectValue.value === 6" />
+      <StringRelated v-if="selectValue.value === 7" />
     </div>
   </div>
 </template>
@@ -22,6 +23,7 @@ import Fibonacci from '@/components/Fibonacci.vue'
 import CommonDivisor from '@/components/CommonDivisor.vue'
 import ArrayRemove from '@/components/ArrayRemove.vue'
 import VariousSort from '@/components/VariousSort.vue'
+import StringRelated from '@/components/StringRelated .vue'
 
 const selectData = reactive([
   { value: '九九乘法表', id: 1 },
@@ -30,6 +32,7 @@ const selectData = reactive([
   { value: '最大公约数', id: 4 },
   { value: '去重', id: 5 },
   { value: '排序', id: 6 },
+  { value: '字符串相关', id: 7 },
 ])
 
 const selectValue = reactive({

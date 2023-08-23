@@ -110,6 +110,31 @@ const arr = [1, 5, 6, 4, 3, 9, 2, 7, 8]
 //   return arr
 // }
 // console.log(getArr(arr))
+
+// 基尔排序
+/**
+ * 基于插入排序进行优化
+ *数组长度的一半进行分组，使用插入排序
+ *完成后再按数组长度的1/4进行分组，使用插入排序
+ *直到长度为1
+ */
+// const xierArr = arr => {
+//   // 第一层确定间隔数
+//   for (let grap = parseInt(arr.length / 2); grap > 0; grap = parseInt(grap / 2)) {
+//     //第二层循环，使用插入排序
+//     for (let i = grap; i < arr.length; i++) {
+//       let preIndex = i - grap
+//       let current = arr[i]
+//       while (preIndex >= 0 && current < arr[preIndex]) {
+//         arr[preIndex + grap] = arr[preIndex]
+//         preIndex -= grap
+//       }
+//       arr[preIndex + grap] = current
+//     }
+//   }
+//   return arr
+// }
+// console.log(xierArr(arr))
 </script>
 
 <style scoped lang="scss"></style>
