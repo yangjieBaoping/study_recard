@@ -11,6 +11,7 @@
       <ArrayRemove v-if="selectValue.value === 5" />
       <VariousSort v-if="selectValue.value === 6" />
       <StringRelated v-if="selectValue.value === 7" />
+      <Greedy v-if="selectValue.value === 8" />
     </div>
   </div>
 </template>
@@ -24,6 +25,7 @@ import CommonDivisor from '@/components/CommonDivisor.vue'
 import ArrayRemove from '@/components/ArrayRemove.vue'
 import VariousSort from '@/components/VariousSort.vue'
 import StringRelated from '@/components/StringRelated .vue'
+import Greedy from '@/components/Greedy.vue'
 
 const selectData = reactive([
   { value: '九九乘法表', id: 1 },
@@ -33,6 +35,7 @@ const selectData = reactive([
   { value: '去重', id: 5 },
   { value: '排序', id: 6 },
   { value: '字符串相关', id: 7 },
+  { value: '其他', id: 8 },
 ])
 
 const selectValue = reactive({
