@@ -39,57 +39,64 @@
       </svg>
     </div>
   </div>
-  <div
-    id="hours_minute_box"
-    v-if="timesStatus.hours_minute"
-    :style="{
-      width: props.selectWidth ? props.selectWidth : '200px',
-    }"
-  >
-    <div class="hours_minute_box_item" id="one_hour">
-      <div
-        class="hours_minute_box_items hour"
-        @click="sureTime"
-        v-for="item in timesList.hours"
-        :key="item"
-      >
-        {{ item }}
+  <div v-if="timesStatus.hours_minute">
+    <div
+      id="hours_minute_box"
+      :style="{
+        width: props.selectWidth ? props.selectWidth : '200px',
+      }"
+    >
+      <div class="hours_minute_box_item" id="one_hour">
+        <div
+          class="hours_minute_box_items hour"
+          @click="sureTime"
+          @mousewheel="scrollTime($event)"
+          v-for="item in timesList.hours"
+          :key="item"
+        >
+          {{ item }}
+        </div>
+      </div>
+      <div class="hours_minute_box_item" id="one_minte">
+        <div
+          class="hours_minute_box_items minute"
+          @click="sureTime"
+          @mousewheel="scrollTime($event)"
+          v-for="item in timesList.minutes"
+          :key="item"
+        >
+          {{ item }}
+        </div>
+      </div>
+      <div class="hours_minute_box_item" id="one_second">
+        <div
+          class="hours_minute_box_items second"
+          @click="sureTime"
+          @mousewheel="scrollTime($event)"
+          v-for="item in timesList.seconds"
+          :key="item"
+        >
+          {{ item }}
+        </div>
       </div>
     </div>
-    <div class="hours_minute_box_item" id="one_minte">
-      <div
-        class="hours_minute_box_items minute"
-        @click="sureTime"
-        v-for="item in timesList.minutes"
-        :key="item"
-      >
-        {{ item }}
-      </div>
-    </div>
-    <div class="hours_minute_box_item" id="one_second">
-      <div
-        class="hours_minute_box_items second"
-        @click="sureTime"
-        v-for="item in timesList.seconds"
-        :key="item"
-      >
-        {{ item }}
-      </div>
+    <div style="margin-top: 10px">
+      <div>12 3</div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive } from 'vue'
 
 const props = defineProps({
   selectWidth: String,
   selectHeight: String,
-});
+})
 
 const showTime = reactive({
-  value: "",
-});
+  value: '',
+})
 
 // 时间数组
 const timesList = reactive({
@@ -99,7 +106,7 @@ const timesList = reactive({
   minutes: [],
   // 秒
   seconds: [],
-});
+})
 
 // 时间弹窗状态
 const timesStatus = reactive({
@@ -109,108 +116,108 @@ const timesStatus = reactive({
   clear_btn: false,
   // 时分弹窗
   hours_minute: false,
-});
+})
 
 // 当前时间
 const nowTime = reactive({
-  hour: "",
-  minute: "",
-  second: "",
-});
+  hour: '',
+  minute: '',
+  second: '',
+})
 
 // 获取初始化时间
 const initializationTime = () => {
-  let H =
-    new Date().getHours() >= 10
-      ? new Date().getHours()
-      : `0${new Date().getHours()}`;
-  let M =
-    new Date().getMinutes() >= 10
-      ? new Date().getMinutes()
-      : `0${new Date().getMinutes()}`;
-  let S =
-    new Date().getSeconds() >= 10
-      ? new Date().getSeconds()
-      : `0${new Date().getSeconds()}`;
-  showTime.value = `${H}:${M}:${S}`;
-  nowTime.hour = H;
-  nowTime.minute = M;
-  nowTime.second = S;
+  let H = new Date().getHours() >= 10 ? new Date().getHours() : `0${new Date().getHours()}`
+  let M = new Date().getMinutes() >= 10 ? new Date().getMinutes() : `0${new Date().getMinutes()}`
+  let S = new Date().getSeconds() >= 10 ? new Date().getSeconds() : `0${new Date().getSeconds()}`
+  showTime.value = `${H}:${M}:${S}`
+  nowTime.hour = H
+  nowTime.minute = M
+  nowTime.second = S
 
   // 初始数据
   // 小时
   for (let i = 0; i < 23; i++) {
-    timesList.hours.push(i);
+    timesList.hours.push(i)
   }
   // 分
   for (let i = 0; i < 59; i++) {
-    timesList.minutes.push(i);
+    timesList.minutes.push(i)
   }
   // 秒
   for (let i = 0; i < 59; i++) {
-    timesList.seconds.push(i);
+    timesList.seconds.push(i)
   }
-};
-initializationTime();
+}
+initializationTime()
 
 // 自动滚动到当前时间
 const getScrollTime = () => {
   // 获取元素
-  let hour = document.getElementById("one_hour");
-  let minte = document.getElementById("one_minte");
-  let second = document.getElementById("one_second");
-  let box_items = document.getElementsByClassName("hours_minute_box_items")[0];
-  hour.scrollTop =
-    nowTime.hour === 0 ? 94 : box_items.offsetHeight * nowTime.hour;
-  minte.scrollTop =
-    nowTime.minute === 0 ? 94 : box_items.offsetHeight * nowTime.minute;
-  second.scrollTop =
-    nowTime.second === 0 ? 94 : box_items.offsetHeight * nowTime.second;
-};
+  let hour = document.getElementById('one_hour')
+  let minte = document.getElementById('one_minte')
+  let second = document.getElementById('one_second')
+  let box_items = document.getElementsByClassName('hours_minute_box_items')[0]
+  hour.scrollTop = nowTime.hour === 0 ? 94 : box_items.offsetHeight * nowTime.hour
+  minte.scrollTop = nowTime.minute === 0 ? 94 : box_items.offsetHeight * nowTime.minute
+  second.scrollTop = nowTime.second === 0 ? 94 : box_items.offsetHeight * nowTime.second
+}
 
 const changeTime = () => {
-  timesStatus.click_num += 1;
-  timesStatus.hours_minute = true;
+  timesStatus.click_num += 1
+  timesStatus.hours_minute = true
   setTimeout(() => {
-    getScrollTime();
-  });
-};
+    getScrollTime()
+  })
+}
 
 // 确认时间
-const sureTime = (e) => {
-  let str = e.target.className.split(" ")[1];
-  let newStr = showTime.value;
+const sureTime = e => {
+  let str = e.target.className.split(' ')[1]
+  let newStr = showTime.value
   if (newStr) {
-    if (str === "hour") {
-      showTime.value = `${e.target.innerText}:${newStr.split(":")[1]}:${
-        newStr.split(":")[2]
-      }`;
-    } else if (str === "minute") {
-      showTime.value = `${newStr.split(":")[0]}:${e.target.innerText}:${
-        newStr.split(":")[2]
-      }`;
+    if (str === 'hour') {
+      showTime.value = `${e.target.innerText}:${newStr.split(':')[1]}:${newStr.split(':')[2]}`
+    } else if (str === 'minute') {
+      showTime.value = `${newStr.split(':')[0]}:${e.target.innerText}:${newStr.split(':')[2]}`
     } else {
-      showTime.value = `${newStr.split(":")[0]}:${newStr.split(":")[1]}:${
-        e.target.innerText
-      }`;
+      showTime.value = `${newStr.split(':')[0]}:${newStr.split(':')[1]}:${e.target.innerText}`
     }
   } else {
-    if (str === "hour") {
-      showTime.value = `${e.target.innerText}:${nowTime.minute}:${nowTime.second}`;
-    } else if (str === "minute") {
-      showTime.value = `${nowTime.hour}:${e.target.innerText}:${nowTime.second}`;
+    if (str === 'hour') {
+      showTime.value = `${e.target.innerText}:${nowTime.minute}:${nowTime.second}`
+    } else if (str === 'minute') {
+      showTime.value = `${nowTime.hour}:${e.target.innerText}:${nowTime.second}`
     } else {
-      showTime.value = `${nowTime.hour}:${nowTime.minute}:${e.target.innerText}`;
+      showTime.value = `${nowTime.hour}:${nowTime.minute}:${e.target.innerText}`
     }
   }
-  timesStatus.hours_minute = false;
-};
+  // timesStatus.hours_minute = false;
+}
 
 // 关闭
 const eliminate_btn = () => {
-  timesStatus.clear_btn = false;
-  showTime.value = "";
-};
+  timesStatus.clear_btn = false
+  showTime.value = ''
+}
+
+// 鼠标滚轮事件
+const scrollTime = e => {
+  switch (e.target.classList[1]) {
+    case 'hour': {
+      console.log(e.target, '1')
+      break
+    }
+    case 'minute': {
+      console.log(e.target, '2')
+      break
+    }
+    case 'second': {
+      console.log(e.target, '3')
+      break
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">

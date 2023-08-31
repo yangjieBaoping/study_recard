@@ -39,23 +39,9 @@
     </table>
   </div>
   <div class="page_box">
-    <div v-if="pagingPage.list.length <= 10" style="display: flex">
+    <div style="display: flex">
       <div
         v-for="item in pagingPage.list"
-        :key="item"
-        :style="{
-          color: item.status ? 'rgb(17, 156, 215)' : '#000',
-          border: item.status ? '1px solid rgb(17, 156, 215)' : '1px solid #000',
-        }"
-        class="page_item"
-        @click="toPage(item.value)"
-      >
-        {{ item.value }}
-      </div>
-    </div>
-    <div v-else style="display: flex">
-      <div
-        v-for="item in pagingPage.changeList"
         :key="item"
         :style="{
           color: item.status ? 'rgb(17, 156, 215)' : '#000',
@@ -100,10 +86,6 @@ const pagingPage = reactive({
   piece_num: 5,
   // 页数
   page_num: 1,
-  // 批次
-  key: 0,
-  // 分页过多处理数组
-  changeList: [],
   // 分页器过多时...点击次数
   click_num: 0,
 })
@@ -127,132 +109,92 @@ const isOpenOperate = () => {
 }
 isOpenOperate()
 
+/**
+ * 逻辑分步
+ * 获取分页列表
+ * 分页——除点击...外分页列表不变
+ * 分页随每页条数变化而变化
+ */
+
+//  获取分页列表——参数为每页条数没有就按照默认值
+const getPageList = value => {
+  pagingPage.list.splice(0, pagingPage.list.length)
+  // 每页条数
+  let piece_num = value ? value : pagingPage.piece_num
+  // 总页数
+  let data =
+    props.tableData.length % piece_num === 0
+      ? props.tableData.length / piece_num
+      : Math.floor(props.tableData.length / piece_num) + 1
+  if (data <= 10) {
+    for (let i = 0; i < data; i++) {
+      pagingPage.list.push({ value: i + 1, status: i + 1 === 1 ? true : false })
+    }
+  } else {
+    if (data - pagingPage.click_num * 8 >= 10) {
+      for (let i = 0; i < 10; i++) {
+        if (i === 9) {
+          pagingPage.list.push({ value: data, status: false })
+        } else if (i === 8) {
+          pagingPage.list.push({ value: '...', status: false })
+        } else {
+          pagingPage.list.push({
+            value: pagingPage.click_num * 8 + i + 1,
+            status:
+              pagingPage.click_num * 8 + i + 1 === 1 && pagingPage.page_num === 1 ? true : false,
+          })
+        }
+      }
+    } else {
+      let newData = data - pagingPage.click_num * 8
+      for (let i = newData + 2; i > 0; i--) {
+        if (i === newData + 2) {
+          pagingPage.list.push({ value: 1, status: pagingPage.page_num === 1 ? true : false })
+        } else if (i === newData + 1) {
+          pagingPage.list.push({ value: '...', status: false })
+        } else {
+          pagingPage.list.push({ value: data - i + 1, status: false })
+        }
+      }
+      pagingPage.click_num = -1
+    }
+  }
+}
+getPageList()
+
+// 获取界面数据
+const getTableData = () => {
+  let arr = props.tableData.slice(
+    (pagingPage.page_num - 1) * pagingPage.piece_num,
+    pagingPage.piece_num * pagingPage.page_num
+  )
+  tableLst.data = [...arr]
+}
+getTableData()
+
 // 切换分页
 const toPage = value => {
   if (value !== '...') {
     pagingPage.page_num = value
-    getList({ page: value })
-    if (pagingPage.list.length <= 10) {
-      for (let i = 0; i < pagingPage.list.length; i++) {
-        if (pagingPage.list[i].value === value) {
-          pagingPage.list[i].status = true
-        } else {
-          pagingPage.list[i].status = false
-        }
-      }
-    } else {
-      for (let i = 0; i < pagingPage.changeList.length; i++) {
-        if (pagingPage.changeList[i].value === value) {
-          pagingPage.changeList[i].status = true
-        } else {
-          pagingPage.changeList[i].status = false
-        }
-      }
+    for (let i = 0; i < pagingPage.list.length; i++) {
+      if (pagingPage.list[i].value === value) {
+        pagingPage.list[i].status = true
+      } else pagingPage.list[i].status = false
     }
+    getTableData()
   } else {
-    // 拓展分页
     pagingPage.click_num += 1
-    pagingPage.changeList.splice(0, pagingPage.changeList.length)
-    getPageValue(pagingPage.click_num)
+    getPageList()
   }
 }
 
 // 切换每页条数
 const toPiece = e => {
-  if (e.target.value > pagingPage.piece_num) {
-    pagingPage.page_num = 1
-  }
-  getList({ piece: Number(e.target.value) })
+  pagingPage.page_num = 1
+  pagingPage.piece_num = e.target.value
+  getPageList()
+  getTableData()
 }
-
-// 分页过多处理
-const getPageValue = data => {
-  /**
-   * 省略规则
-   * 第 m * 9个为省略号
-   * 最后一个固定
-   * 前面的向前推进8个
-   */
-  if (!data) {
-    data = 0
-  }
-  if (pagingPage.list.length % 10 === 0) {
-    pagingPage.key = pagingPage.list.length / 10
-  } else {
-    pagingPage.key = Math.floor(pagingPage.list.length / 10) + 1
-  }
-  if (data < pagingPage.key - 1) {
-    for (let i = 0; i < 10; i++) {
-      if (i === 9) {
-        pagingPage.changeList.push({
-          value: pagingPage.list[pagingPage.list.length - 1].value,
-          status: false,
-        })
-      } else if (i === 8) {
-        pagingPage.changeList.push({ value: '...', status: false })
-      } else {
-        pagingPage.changeList.push({
-          value: pagingPage.list[i + 8 * data].value,
-          status: pagingPage.list[i + 8 * data].value === 1 ? true : false,
-        })
-      }
-    }
-  } else if (data === pagingPage.key - 1) {
-    let Num = pagingPage.list[pagingPage.list.length - 1].value - 8 * data
-    pagingPage.changeList.push({ value: '...', status: false })
-    for (let i = 0; i < Num; i++) {
-      pagingPage.changeList.push({ value: 8 * data + i + 1, status: false })
-    }
-  } else {
-    pagingPage.click_num = 0
-    getPageValue()
-  }
-}
-
-// 获取
-const getList = value => {
-  tableLst.data.splice(0, tableLst.data.length)
-  pagingPage.changeList.splice(0, pagingPage.changeList.length)
-  if (Object.keys(value)[0] === 'piece') {
-    pagingPage.piece_num = value[Object.keys(value)[0]]
-    pagingPage.page_num = 1
-  } else {
-    pagingPage.page_num = Number(value[Object.keys(value)[0]])
-  }
-  let arr = props.tableData.slice(
-    (pagingPage.page_num - 1) * pagingPage.piece_num,
-    pagingPage.piece_num * pagingPage.page_num
-  )
-  let Num = 0
-  if (props.tableData.length % pagingPage.piece_num === 0) {
-    Num = Math.floor(props.tableData.length / pagingPage.piece_num)
-  } else {
-    Num = Math.floor(props.tableData.length / pagingPage.piece_num) + 1
-  }
-  if (Num === 1) {
-    pagingPage.list = [{ value: 1, status: true }]
-    props.tableData.map(item => {
-      tableLst.data.push(item)
-    })
-  } else {
-    props.tableData.map(() => {
-      tableLst.data = [...arr]
-      if (pagingPage.list.length !== 0) {
-        pagingPage.list.splice(0, pagingPage.list.length)
-      }
-      for (let i = 0; i < Num; i++) {
-        pagingPage.list.push({
-          value: i + 1,
-          status: i === 0 ? true : false,
-        })
-      }
-    })
-  }
-  if (pagingPage.list.length > 10) {
-    getPageValue()
-  }
-}
-getList({ page: 1 })
 
 // 表格宽度设置
 const getWidth = () => {
@@ -290,17 +232,16 @@ onMounted(() => {
 
 // 复选事件处理
 const allCheck = e => {
-  console.dir(e.target.checked)
-  // let child_check = document.getElementsByClassName('child_check')
-  // for (let i = 0; i < child_check.length; i++) {
-  //   if (e.target.checked) {
-  //     child_check[i].checked = true
-  //     checkedList.push(props.tableData[i].id)
-  //   } else {
-  //     child_check[i].checked = false
-  //     checkedList.splice(0, checkedList.length)
-  //   }
-  // }
+  let child_check = document.getElementsByClassName('child_check')
+  for (let i = 0; i < child_check.length; i++) {
+    if (e.target.checked) {
+      child_check[i].checked = true
+      checkedList.push(props.tableData[i].id)
+    } else {
+      child_check[i].checked = false
+      checkedList.splice(0, checkedList.length)
+    }
+  }
 }
 const childCheck = (e, data) => {
   if (checkedList.length) {

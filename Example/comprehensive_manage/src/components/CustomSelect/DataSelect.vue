@@ -5,12 +5,7 @@
       height: props.selectHeight ? props.selectHeight : '35px',
     }"
   >
-    <input
-      type="text"
-      @click="opData"
-      placeholder="选择日期"
-      v-model="titleTime.nowTime"
-    />
+    <input type="text" @click="opData" placeholder="选择日期" v-model="titleTime.nowTime" />
     <div
       style="margin-top: 10px; padding: 10px; border: 1px solid #666"
       :style="{
@@ -55,15 +50,12 @@
           ></path>
         </svg>
         <div style="flex: 1; text-align: center">
-          <span
-            class="change_color"
-            style="margin-right: 10px; cursor: pointer"
-            @click="getYear"
-            >{{ titleTime.year }}年</span
-          >
-          <span class="change_color" style="cursor: pointer" @click="getMonth"
-            >{{ titleTime.month }}月</span
-          >
+          <span class="change_color" style="margin-right: 10px; cursor: pointer" @click="getYear">
+            {{ titleTime.year }}年
+          </span>
+          <span class="change_color" style="cursor: pointer" @click="getMonth">
+            {{ titleTime.month }}月
+          </span>
         </div>
         <svg
           @click="addMonth(true)"
@@ -116,6 +108,7 @@
             <div
               v-for="item in timesStatus.dayList"
               :key="item"
+              class="change_color"
               style="text-align: center; cursor: pointer"
               @click="sureDate(item)"
             >
@@ -130,6 +123,7 @@
           <div
             v-for="item in 10"
             :key="item"
+            class="change_color"
             style="text-align: center; cursor: pointer"
             @click="sureYear(titleTime.year + item)"
           >
@@ -143,6 +137,7 @@
           <div
             v-for="item in 12"
             :key="item"
+            class="change_color"
             style="text-align: center; cursor: pointer"
             @click="sureMonth(item)"
           >
@@ -155,161 +150,161 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive } from 'vue'
 
 const props = defineProps({
   selectWidth: String,
   selectHeight: String,
-});
+})
 
 const titleTime = reactive({
-  year: "",
-  month: "",
-  nowTime: "",
-});
+  year: '',
+  month: '',
+  nowTime: '',
+})
 
 const timesStatus = reactive({
   status: false,
   year_status: false,
   month_status: false,
   data_status: false,
-  week: ["一", "二", "三", "四", "五", "六", "日"],
+  week: ['一', '二', '三', '四', '五', '六', '日'],
   dayList: [],
-});
+})
 
 // 获取某个月份第一天和最后一天
 const getAllData = (year, month) => {
-  let frist_day = new Date(year, month, 1);
-  let end_day = new Date(year, month + 1, 0);
-  let arr = [];
+  let frist_day = new Date(year, month, 1)
+  let end_day = new Date(year, month + 1, 0)
+  let arr = []
   arr.push({
     frist: new Date(frist_day).getDay(),
     end: new Date(end_day).getDay(),
     day: new Date(end_day).getDate(),
-  });
-  return arr;
-};
+  })
+  return arr
+}
 
 // 改变时间
 const changeTime = (year, month) => {
-  timesStatus.dayList = [];
-  let now_month = getAllData(year, month);
-  let previous_month = getAllData(year, month - 1);
+  timesStatus.dayList = []
+  let now_month = getAllData(year, month)
+  let previous_month = getAllData(year, month - 1)
   if (now_month[0].frist === 1) {
     for (let i = 0; i < now_month[0].day; i++) {
       timesStatus.dayList.push({
         value: i + 1,
-        status: "now",
-      });
+        status: 'now',
+      })
     }
-    let Num = 42 - now_month[0].day;
+    let Num = 42 - now_month[0].day
     for (let i = 0; i < Num; i++) {
       timesStatus.dayList.push({
         value: i + 1,
-        status: "last",
-      });
+        status: 'last',
+      })
     }
   } else {
     for (let i = 0; i < now_month[0].frist - 1; i++) {
       timesStatus.dayList.unshift({
         value: previous_month[0].day - i,
-        status: "previous",
-      });
+        status: 'previous',
+      })
     }
     for (let i = 0; i < now_month[0].day; i++) {
       timesStatus.dayList.push({
         value: i + 1,
-        status: "now",
-      });
+        status: 'now',
+      })
     }
     if (timesStatus.dayList.length < 42) {
-      let Num = 42 - timesStatus.dayList.length;
+      let Num = 42 - timesStatus.dayList.length
       for (let i = 0; i < Num; i++) {
         timesStatus.dayList.push({
           value: i + 1,
-          status: "last",
-        });
+          status: 'last',
+        })
       }
     }
   }
-};
+}
 
 // 获取当前时间
 const getNowTime = () => {
-  let year = new Date().getFullYear();
-  let month = new Date().getMonth();
-  titleTime.year = year;
-  titleTime.month = month + 1;
-  changeTime(year, month);
-};
-getNowTime();
+  let year = new Date().getFullYear()
+  let month = new Date().getMonth()
+  titleTime.year = year
+  titleTime.month = month + 1
+  changeTime(year, month)
+}
+getNowTime()
 
 // 修改月份
-const addMonth = (status) => {
+const addMonth = status => {
   if (status) {
-    titleTime.month += 1;
+    titleTime.month += 1
     if (titleTime.month > 12) {
-      titleTime.month = 1;
-      titleTime.year += 1;
+      titleTime.month = 1
+      titleTime.year += 1
     }
   } else {
-    titleTime.month -= 1;
+    titleTime.month -= 1
     if (titleTime.month < 1) {
-      titleTime.month = 12;
-      titleTime.year -= 1;
+      titleTime.month = 12
+      titleTime.year -= 1
     }
   }
-  changeTime(titleTime.year, titleTime.month - 1);
-};
-const addYear = (status) => {
+  changeTime(titleTime.year, titleTime.month - 1)
+}
+const addYear = status => {
   if (status) {
-    titleTime.year += 1;
+    titleTime.year += 1
   } else {
-    titleTime.year -= 1;
+    titleTime.year -= 1
   }
-  changeTime(titleTime.year, titleTime.month - 1);
-};
+  changeTime(titleTime.year, titleTime.month - 1)
+}
 
 // 选中时间
-const sureDate = (data) => {
-  let M = titleTime.month;
-  if (data.status === "previous") {
-    M = M - 1;
-  } else if (data.status === "last") {
-    M = M + 1;
+const sureDate = data => {
+  let M = titleTime.month
+  if (data.status === 'previous') {
+    M = M - 1
+  } else if (data.status === 'last') {
+    M = M + 1
   }
-  titleTime.nowTime = `${titleTime.year}-${M}-${data.value}`;
-  timesStatus.data_status = false;
-  timesStatus.status = false;
-  changeTime(titleTime.year, titleTime.month - 1);
-};
+  titleTime.nowTime = `${titleTime.year}-${M}-${data.value}`
+  timesStatus.data_status = false
+  timesStatus.status = false
+  changeTime(titleTime.year, titleTime.month - 1)
+}
 
-const sureYear = (value) => {
-  titleTime.year = value;
-  timesStatus.year_status = false;
-  timesStatus.month_status = true;
-};
+const sureYear = value => {
+  titleTime.year = value
+  timesStatus.year_status = false
+  timesStatus.month_status = true
+}
 
-const sureMonth = (value) => {
-  titleTime.month = value;
-  timesStatus.month_status = false;
-  timesStatus.data_status = true;
-};
+const sureMonth = value => {
+  titleTime.month = value
+  timesStatus.month_status = false
+  timesStatus.data_status = true
+}
 
 const opData = () => {
-  timesStatus.status = true;
-  timesStatus.data_status = true;
-};
+  timesStatus.status = true
+  timesStatus.data_status = true
+}
 const getYear = () => {
-  timesStatus.year_status = true;
-  timesStatus.month_status = false;
-  timesStatus.data_status = false;
-};
+  timesStatus.year_status = true
+  timesStatus.month_status = false
+  timesStatus.data_status = false
+}
 const getMonth = () => {
-  timesStatus.year_status = false;
-  timesStatus.month_status = true;
-  timesStatus.data_status = false;
-};
+  timesStatus.year_status = false
+  timesStatus.month_status = true
+  timesStatus.data_status = false
+}
 </script>
 
 <style scoped lang="scss">
