@@ -26,7 +26,7 @@
       :tableData="list.tBody"
       :tableId="list.tId"
     />
-    <!-- <TimeSelect
+    <TimeSelect
       v-if="someTool.name === '选择器' && list.selectId === 1"
       :selectWidth="''"
       :selectHeight="''"
@@ -47,7 +47,7 @@
       :uploadHeight="''"
     />
     <CountInstrument v-if="someTool.name === '计算器'" />
-    <CanvasRead v-if="someTool.name === '画布'" /> -->
+    <CanvasRead v-if="someTool.name === '画布'" />
   </div>
 </template>
 

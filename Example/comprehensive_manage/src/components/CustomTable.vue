@@ -290,16 +290,17 @@ onMounted(() => {
 
 // 复选事件处理
 const allCheck = e => {
-  let child_check = document.getElementsByClassName('child_check')
-  for (let i = 0; i < child_check.length; i++) {
-    if (e.target.checked) {
-      child_check[i].checked = true
-      checkedList.push(props.tableData[i].id)
-    } else {
-      child_check[i].checked = false
-      checkedList.splice(0, checkedList.length)
-    }
-  }
+  console.dir(e.target.checked)
+  // let child_check = document.getElementsByClassName('child_check')
+  // for (let i = 0; i < child_check.length; i++) {
+  //   if (e.target.checked) {
+  //     child_check[i].checked = true
+  //     checkedList.push(props.tableData[i].id)
+  //   } else {
+  //     child_check[i].checked = false
+  //     checkedList.splice(0, checkedList.length)
+  //   }
+  // }
 }
 const childCheck = (e, data) => {
   if (checkedList.length) {
