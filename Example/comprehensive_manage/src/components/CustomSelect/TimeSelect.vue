@@ -8,7 +8,7 @@
   >
     <input
       type="text"
-      @click="changeTime(1)"
+      @click="changeTime"
       style="width: calc(100% - 40px)"
       v-model="showTime.value"
       placeholder="当前时间"
@@ -39,49 +39,51 @@
       </svg>
     </div>
   </div>
-  <div v-if="timesStatus.hours_minute">
-    <div
-      id="hours_minute_box"
-      :style="{
-        width: props.selectWidth ? props.selectWidth : '200px',
-      }"
-    >
-      <div class="hours_minute_box_item" id="one_hour">
-        <div
-          class="hours_minute_box_items hour"
-          @click="sureTime"
-          @mousewheel="scrollTime($event)"
-          v-for="item in timesList.hours"
-          :key="item"
-        >
-          {{ item }}
+  <div
+    v-if="timesStatus.hours_minute"
+    :style="{
+      width: props.selectWidth ? props.selectWidth : '200px',
+    }"
+  >
+    <div style="border-radius: 5px; border: 1px solid #f3f3f3">
+      <div id="hours_minute_box">
+        <div class="hours_minute_box_item" id="one_hour">
+          <div
+            class="hours_minute_box_items hour"
+            @click="sureTime"
+            @mousewheel="scrollTime($event)"
+            v-for="item in timesList.hours"
+            :key="item"
+          >
+            {{ item }}
+          </div>
+        </div>
+        <div class="hours_minute_box_item" id="one_minte">
+          <div
+            class="hours_minute_box_items minute"
+            @click="sureTime"
+            @mousewheel="scrollTime($event)"
+            v-for="item in timesList.minutes"
+            :key="item"
+          >
+            {{ item }}
+          </div>
+        </div>
+        <div class="hours_minute_box_item" id="one_second">
+          <div
+            class="hours_minute_box_items second"
+            @click="sureTime"
+            @mousewheel="scrollTime($event)"
+            v-for="item in timesList.seconds"
+            :key="item"
+          >
+            {{ item }}
+          </div>
         </div>
       </div>
-      <div class="hours_minute_box_item" id="one_minte">
-        <div
-          class="hours_minute_box_items minute"
-          @click="sureTime"
-          @mousewheel="scrollTime($event)"
-          v-for="item in timesList.minutes"
-          :key="item"
-        >
-          {{ item }}
-        </div>
+      <div style="border-top: 1px solid #f3f3f3">
+        <div>确定</div>
       </div>
-      <div class="hours_minute_box_item" id="one_second">
-        <div
-          class="hours_minute_box_items second"
-          @click="sureTime"
-          @mousewheel="scrollTime($event)"
-          v-for="item in timesList.seconds"
-          :key="item"
-        >
-          {{ item }}
-        </div>
-      </div>
-    </div>
-    <div style="margin-top: 10px">
-      <div>12 3</div>
     </div>
   </div>
 </template>
@@ -166,9 +168,9 @@ const getScrollTime = () => {
 const changeTime = () => {
   timesStatus.click_num += 1
   timesStatus.hours_minute = true
-  setTimeout(() => {
-    getScrollTime()
-  })
+  // setTimeout(() => {
+  //   getScrollTime()
+  // })
 }
 
 // 确认时间
@@ -205,15 +207,15 @@ const eliminate_btn = () => {
 const scrollTime = e => {
   switch (e.target.classList[1]) {
     case 'hour': {
-      console.log(e.target, '1')
+      // console.log(e.target, '1')
       break
     }
     case 'minute': {
-      console.log(e.target, '2')
+      // console.log(e.target, '2')
       break
     }
     case 'second': {
-      console.log(e.target, '3')
+      // console.log(e.target, '3')
       break
     }
   }
@@ -245,8 +247,6 @@ input {
 // 时间弹窗样式
 #hours_minute_box {
   height: 220px;
-  border: 1px solid #f3f3f3;
-  margin-top: 10px;
   display: flex;
 }
 
