@@ -15,38 +15,29 @@
     >
       <div id="look_year">
         <svg
-          @click="addYear(false)"
-          t="1685091696133"
-          class="icon"
           viewBox="0 0 1024 1024"
-          version="1.1"
+          width="15"
+          height="15"
           xmlns="http://www.w3.org/2000/svg"
-          p-id="3345"
-          width="20"
-          height="20"
+          @click="addYear(false)"
         >
           <path
-            d="M735.208665 65.582671l-446.41733 446.417329 446.41733 446.417329z"
-            p-id="3346"
-            fill="#2c2c2c"
+            fill="currentColor"
+            d="M529.408 149.376a29.12 29.12 0 0 1 41.728 0 30.592 30.592 0 0 1 0 42.688L259.264 511.936l311.872 319.936a30.592 30.592 0 0 1-.512 43.264 29.12 29.12 0 0 1-41.216-.512L197.76 534.272a32 32 0 0 1 0-44.672l331.648-340.224zm256 0a29.12 29.12 0 0 1 41.728 0 30.592 30.592 0 0 1 0 42.688L515.264 511.936l311.872 319.936a30.592 30.592 0 0 1-.512 43.264 29.12 29.12 0 0 1-41.216-.512L453.76 534.272a32 32 0 0 1 0-44.672l331.648-340.224z"
           ></path>
         </svg>
         <svg
+          v-if="!timesStatus.year_status && !timesStatus.month_status"
           @click="addMonth(false)"
           style="margin-left: 10px"
-          t="1685091725565"
-          class="icon"
           viewBox="0 0 1024 1024"
-          version="1.1"
           xmlns="http://www.w3.org/2000/svg"
-          p-id="3548"
-          width="20"
-          height="20"
+          width="15"
+          height="15"
         >
           <path
-            d="M677.391515 873.916768c-7.86101 0-15.618586-2.999596-21.617778-8.895354L324.473535 533.721212c-11.998384-11.894949-11.998384-31.340606 0-43.235555L655.670303 159.288889c5.999192-5.999192 13.756768-8.895354 21.617778-8.895354 7.757576 0 15.618586 2.999596 21.617778 8.895354 11.894949 11.894949 11.894949 31.237172 0 43.235555L389.223434 512.103434 698.905859 821.785859c11.894949 11.998384 11.894949 31.340606 0 43.235555-5.895758 5.895758-13.756768 8.895354-21.514344 8.895354z m0 0"
-            fill="#666666"
-            p-id="3549"
+            d="M609.408 149.376 277.76 489.6a32 32 0 0 0 0 44.672l331.648 340.352a29.12 29.12 0 0 0 41.728 0 30.592 30.592 0 0 0 0-42.752L339.264 511.936l311.872-319.872a30.592 30.592 0 0 0 0-42.688 29.12 29.12 0 0 0-41.728 0z"
+            fill="currentColor"
           ></path>
         </svg>
         <div style="flex: 1; text-align: center">
@@ -58,38 +49,29 @@
           </span>
         </div>
         <svg
+          v-if="!timesStatus.year_status && !timesStatus.month_status"
           @click="addMonth(true)"
           style="margin-right: 10px"
-          t="1685091771600"
-          class="icon"
           viewBox="0 0 1024 1024"
-          version="1.1"
           xmlns="http://www.w3.org/2000/svg"
-          p-id="4725"
-          width="20"
-          height="20"
+          width="15"
+          height="15"
         >
           <path
-            d="M761.6 489.6l-432-435.2c-9.6-9.6-25.6-9.6-35.2 0-9.6 9.6-9.6 25.6 0 35.2l416 416-416 425.6c-9.6 9.6-9.6 25.6 0 35.2s25.6 9.6 35.2 0l432-441.6C771.2 515.2 771.2 499.2 761.6 489.6z"
-            p-id="4726"
-            fill="#2c2c2c"
+            d="M340.864 149.312a30.592 30.592 0 0 0 0 42.752L652.736 512 340.864 831.872a30.592 30.592 0 0 0 0 42.752 29.12 29.12 0 0 0 41.728 0L714.24 534.336a32 32 0 0 0 0-44.672L382.592 149.376a29.12 29.12 0 0 0-41.728 0z"
+            fill="currentColor"
           ></path>
         </svg>
         <svg
-          @click="addYear(true)"
-          t="1685091754287"
-          class="icon"
           viewBox="0 0 1024 1024"
-          version="1.1"
+          width="15"
+          height="15"
           xmlns="http://www.w3.org/2000/svg"
-          p-id="4522"
-          width="20"
-          height="20"
+          @click="addYear(true)"
         >
           <path
-            d="M288.791335 65.582671l446.41733 446.417329-446.41733 446.417329z"
-            p-id="4523"
-            fill="#2c2c2c"
+            fill="currentColor"
+            d="M452.864 149.312a29.12 29.12 0 0 1 41.728.064L826.24 489.664a32 32 0 0 1 0 44.672L494.592 874.624a29.12 29.12 0 0 1-41.728 0 30.592 30.592 0 0 1 0-42.752L764.736 512 452.864 192a30.592 30.592 0 0 1 0-42.688zm-256 0a29.12 29.12 0 0 1 41.728.064L570.24 489.664a32 32 0 0 1 0 44.672L238.592 874.624a29.12 29.12 0 0 1-41.728 0 30.592 30.592 0 0 1 0-42.752L508.736 512 196.864 192a30.592 30.592 0 0 1 0-42.688z"
           ></path>
         </svg>
       </div>
@@ -108,7 +90,7 @@
             <div
               v-for="item in timesStatus.dayList"
               :key="item"
-              class="change_color"
+              :class="item.status === 'now' ? `change_color` : `time_color`"
               style="text-align: center; cursor: pointer"
               @click="sureDate(item)"
             >
@@ -125,9 +107,9 @@
             :key="item"
             class="change_color"
             style="text-align: center; cursor: pointer"
-            @click="sureYear(titleTime.year + item)"
+            @click="sureYear(titleTime.year - 3 + item)"
           >
-            {{ titleTime.year + item }}
+            {{ titleTime.year - 3 + item }}
           </div>
         </div>
         <div
@@ -188,43 +170,30 @@ const getAllData = (year, month) => {
 // 改变时间
 const changeTime = (year, month) => {
   timesStatus.dayList = []
+  // 当月
   let now_month = getAllData(year, month)
+  // 上个月
   let previous_month = getAllData(year, month - 1)
   if (now_month[0].frist === 1) {
     for (let i = 0; i < now_month[0].day; i++) {
-      timesStatus.dayList.push({
-        value: i + 1,
-        status: 'now',
-      })
+      timesStatus.dayList.push({ value: i + 1, status: 'now' })
     }
     let Num = 42 - now_month[0].day
     for (let i = 0; i < Num; i++) {
-      timesStatus.dayList.push({
-        value: i + 1,
-        status: 'last',
-      })
+      timesStatus.dayList.push({ value: i + 1, status: 'last' })
     }
   } else {
-    for (let i = 0; i < now_month[0].frist - 1; i++) {
-      timesStatus.dayList.unshift({
-        value: previous_month[0].day - i,
-        status: 'previous',
-      })
+    let previous = previous_month[0].end
+    for (let i = 0; i < previous; i++) {
+      timesStatus.dayList.push({ value: previous_month[0].day - i, status: 'previous' })
     }
     for (let i = 0; i < now_month[0].day; i++) {
-      timesStatus.dayList.push({
-        value: i + 1,
-        status: 'now',
-      })
+      timesStatus.dayList.push({ value: i + 1, status: 'now' })
     }
-    if (timesStatus.dayList.length < 42) {
-      let Num = 42 - timesStatus.dayList.length
-      for (let i = 0; i < Num; i++) {
-        timesStatus.dayList.push({
-          value: i + 1,
-          status: 'last',
-        })
-      }
+    let Num = 42 - previous - now_month[0].day
+    if (Num < 1) return
+    for (let i = 0; i < Num; i++) {
+      timesStatus.dayList.push({ value: i + 1, status: 'last' })
     }
   }
 }
@@ -258,9 +227,17 @@ const addMonth = status => {
 }
 const addYear = status => {
   if (status) {
-    titleTime.year += 1
+    if (timesStatus.year_status) {
+      titleTime.year += 10
+    } else {
+      titleTime.year += 1
+    }
   } else {
-    titleTime.year -= 1
+    if (timesStatus.year_status) {
+      titleTime.year -= 10
+    } else {
+      titleTime.year -= 1
+    }
   }
   changeTime(titleTime.year, titleTime.month - 1)
 }
@@ -289,6 +266,7 @@ const sureMonth = value => {
   titleTime.month = value
   timesStatus.month_status = false
   timesStatus.data_status = true
+  changeTime(titleTime.year, titleTime.month - 1)
 }
 
 const opData = () => {
@@ -324,5 +302,8 @@ svg {
 }
 .change_color:hover {
   color: rgb(0, 221, 255);
+}
+.time_color {
+  color: #999;
 }
 </style>

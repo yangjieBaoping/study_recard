@@ -10,12 +10,7 @@
       @click="uploadFile"
     >
       +
-      <input
-        type="file"
-        id="upload_file"
-        style="display: none"
-        @change="getFile"
-      />
+      <input type="file" id="upload_file" style="display: none" @change="getFile" />
     </div>
 
     <!-- 图片显示 -->
@@ -25,29 +20,27 @@
         height: props.uploadHeight ? props.uploadHeight : '50px',
       }"
       id="show_img"
-    >
-      <!-- <img alt="" /> -->
-    </div>
+    ></div>
   </div>
 </template>
 
 <script setup>
-import { fileGetImg } from "@/utils/getImg";
+import { fileGetImg } from '@/utils/getImg'
 const props = defineProps({
   uploadWidth: String,
   uploadHeight: String,
-});
+})
 const uploadFile = () => {
-  let upload_file = document.getElementById("upload_file");
-  upload_file.click();
-};
+  let upload_file = document.getElementById('upload_file')
+  upload_file.click()
+}
 const getFile = () => {
-  let upload_file = document.getElementById("upload_file");
-  let show_img = document.getElementById("show_img");
-  const File = upload_file.files[0];
-  let value = fileGetImg(File);
-  show_img.appendChild(value);
-};
+  let upload_file = document.getElementById('upload_file')
+  let show_img = document.getElementById('show_img')
+  const File = upload_file.files[0]
+  let value = fileGetImg(File)
+  show_img.appendChild(value)
+}
 </script>
 
 <style scoped lang="scss">

@@ -47,9 +47,10 @@
   >
     <div style="border-radius: 5px; border: 1px solid #f3f3f3">
       <div id="hours_minute_box">
-        <div class="hours_minute_box_item" id="one_hour">
+        <div class="hours_minute_box_item" ref="one_hour">
           <div
-            class="hours_minute_box_items hour"
+            ref="hours_minute_box_items"
+            class="hour"
             @click="sureTime"
             @mousewheel="scrollTime($event)"
             v-for="item in timesList.hours"
@@ -58,9 +59,10 @@
             {{ item }}
           </div>
         </div>
-        <div class="hours_minute_box_item" id="one_minte">
+        <div class="hours_minute_box_item" ref="one_minte">
           <div
-            class="hours_minute_box_items minute"
+            ref="hours_minute_box_items"
+            class="minute"
             @click="sureTime"
             @mousewheel="scrollTime($event)"
             v-for="item in timesList.minutes"
@@ -69,9 +71,10 @@
             {{ item }}
           </div>
         </div>
-        <div class="hours_minute_box_item" id="one_second">
+        <div class="hours_minute_box_item" ref="one_second">
           <div
-            class="hours_minute_box_items second"
+            ref="hours_minute_box_items"
+            class="second"
             @click="sureTime"
             @mousewheel="scrollTime($event)"
             v-for="item in timesList.seconds"
@@ -82,14 +85,14 @@
         </div>
       </div>
       <div style="border-top: 1px solid #f3f3f3">
-        <div>确定</div>
+        <Button width="50" height="30" value="确定" type="success"></Button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 const props = defineProps({
   selectWidth: String,
@@ -127,6 +130,12 @@ const nowTime = reactive({
   second: '',
 })
 
+// 元素
+const one_hour = ref('')
+const one_minte = ref('')
+const one_second = ref('')
+const hours_minute_box_items = ref('')
+
 // 获取初始化时间
 const initializationTime = () => {
   let H = new Date().getHours() >= 10 ? new Date().getHours() : `0${new Date().getHours()}`
@@ -156,21 +165,18 @@ initializationTime()
 // 自动滚动到当前时间
 const getScrollTime = () => {
   // 获取元素
-  let hour = document.getElementById('one_hour')
-  let minte = document.getElementById('one_minte')
-  let second = document.getElementById('one_second')
-  let box_items = document.getElementsByClassName('hours_minute_box_items')[0]
-  hour.scrollTop = nowTime.hour === 0 ? 94 : box_items.offsetHeight * nowTime.hour
-  minte.scrollTop = nowTime.minute === 0 ? 94 : box_items.offsetHeight * nowTime.minute
-  second.scrollTop = nowTime.second === 0 ? 94 : box_items.offsetHeight * nowTime.second
+  let box_items = hours_minute_box_items.value[0]
+  one_hour.value.scrollTop = box_items.offsetHeight * nowTime.hour
+  one_minte.value.scrollTop = box_items.offsetHeight * nowTime.minute
+  one_second.value.scrollTop = box_items.offsetHeight * nowTime.second
 }
 
 const changeTime = () => {
   timesStatus.click_num += 1
   timesStatus.hours_minute = true
-  // setTimeout(() => {
-  //   getScrollTime()
-  // })
+  setTimeout(() => {
+    getScrollTime()
+  })
 }
 
 // 确认时间
@@ -205,17 +211,42 @@ const eliminate_btn = () => {
 
 // 鼠标滚轮事件
 const scrollTime = e => {
-  switch (e.target.classList[1]) {
+  let data = hours_minute_box_items.value[0].offsetHeight
+  switch (e.target.className) {
     case 'hour': {
-      // console.log(e.target, '1')
+      if (e.wheelDelta > 0) {
+        setTimeout(() => {
+          one_hour.value.scrollTop -= data * 3
+        })
+      } else {
+        setTimeout(() => {
+          one_hour.value.scrollTop += data * 3
+        })
+      }
       break
     }
     case 'minute': {
-      // console.log(e.target, '2')
+      if (e.wheelDelta > 0) {
+        setTimeout(() => {
+          one_minte.value.scrollTop -= data * 3
+        })
+      } else {
+        setTimeout(() => {
+          one_minte.value.scrollTop += data * 3
+        })
+      }
       break
     }
     case 'second': {
-      // console.log(e.target, '3')
+      if (e.wheelDelta > 0) {
+        setTimeout(() => {
+          one_second.value.scrollTop -= data * 3
+        })
+      } else {
+        setTimeout(() => {
+          one_second.value.scrollTop += data * 3
+        })
+      }
       break
     }
   }
@@ -246,7 +277,7 @@ input {
 
 // 时间弹窗样式
 #hours_minute_box {
-  height: 220px;
+  height: 192px;
   display: flex;
 }
 
@@ -254,14 +285,24 @@ input {
   flex: 1;
   overflow-y: scroll;
   text-align: center;
-  padding: 94px 0px;
+}
+.hours_minute_box_item::before,
+.hours_minute_box_item::after {
+  content: '';
+  height: 80px;
+  display: block;
 }
 .hours_minute_box_items {
   line-height: 30px;
   cursor: pointer;
   user-select: none;
 }
-.hours_minute_box_items:hover {
+.hours_minute_box_item > div {
+  line-height: 32px;
+  cursor: pointer;
+  user-select: none;
+}
+.hours_minute_box_item > div:hover {
   background-color: #f6f1f1;
   color: red;
 }
