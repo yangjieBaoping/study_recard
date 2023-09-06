@@ -21,9 +21,12 @@ const $store = useStore()
   align-items: center;
 }
 .success {
+  color: white;
 }
 .warming {
+  color: orange;
 }
 .danger {
+  color: red;
 }
 </style>

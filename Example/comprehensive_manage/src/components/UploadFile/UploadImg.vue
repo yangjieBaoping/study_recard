@@ -20,14 +20,16 @@
       }"
       style="margin-left: 10px"
     >
-      <div ref="show_img"></div>
+      <div style="position: relative">
+        <div ref="show_img"></div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { fileGetImg } from '@/utils/getImg'
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 const props = defineProps({
   uploadWidth: String,
@@ -38,6 +40,8 @@ const upload_file = ref('')
 const show_img = ref('')
 
 const $store = useStore()
+
+const isImgControl = reactive({ status: false })
 
 const uploadFile = () => {
   upload_file.value.click()
