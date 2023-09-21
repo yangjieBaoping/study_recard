@@ -41,6 +41,14 @@ const getValue = e => {
     ctx.arc(40, 40, 20, 0, 1 * Math.PI)
     ctx.stroke()
   } else if (e.target.value === '5') {
+    ctx.beginPath()
+    ctx.moveTo(20, 0)
+    ctx.lineTo(10, 40)
+    ctx.lineTo(40, 10)
+    ctx.lineTo(0, 10)
+    ctx.lineTo(30, 40)
+    ctx.closePath()
+    ctx.stroke()
   } else if (e.target.value === '6') {
   }
 }
