@@ -11,7 +11,6 @@
 
 <script setup>
 import { reactive } from 'vue'
-import { getLine } from '@/utils/cancas'
 
 const canvasList = reactive([
   { name: '直线', id: '1' },
@@ -26,9 +25,28 @@ const getValue = e => {
   let canvas = document.getElementById('canvas')
   let ctx = canvas.getContext('2d')
   if (e.target.value === '1') {
-    getLine(ctx)
+    ctx.moveTo(0, 0)
+    ctx.lineTo(0, 50)
+    ctx.stroke()
+  } else if (e.target.value === '2') {
+    ctx.rect(0, 0, 100, 50)
+    ctx.stroke()
+  } else if (e.target.value === '3') {
+    ctx.beginPath()
+    ctx.arc(40, 40, 20, 0, 2 * Math.PI)
+    ctx.stroke()
+  } else if (e.target.value === '4') {
+    // 半圆
+    ctx.beginPath()
+    ctx.arc(40, 40, 20, 0, 1 * Math.PI)
+    ctx.stroke()
+  } else if (e.target.value === '5') {
+  } else if (e.target.value === '6') {
   }
 }
+
+// canvas绘制
+const getCanvas = () => {}
 </script>
 
 <style scoped lang="scss">

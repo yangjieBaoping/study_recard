@@ -1,55 +1,91 @@
 <template>
   <div>
-    <input type="text" id="count_result" />
+    <input type="text" ref="count_result" />
   </div>
   <div class="count_box">
     <div v-for="item in 10" style="text-align: center; cursor: pointer" @click="getCount">
       {{ item - 1 }}
     </div>
-    <div style="cursor: pointer; user-select: none" @click="jiaCount">+</div>
-    <div style="cursor: pointer; user-select: none" @click="jianCount">-</div>
-    <div style="cursor: pointer; user-select: none" @click="shenCount">*</div>
-    <div style="cursor: pointer; user-select: none" @click="chuCount">/</div>
+    <div style="cursor: pointer; user-select: none" @click="sizeCount($event)">+</div>
+    <div style="cursor: pointer; user-select: none" @click="sizeCount($event)">-</div>
+    <div style="cursor: pointer; user-select: none" @click="sizeCount($event)">*</div>
+    <div style="cursor: pointer; user-select: none" @click="sizeCount($event)">/</div>
     <div style="cursor: pointer; user-select: none" @click="dengyuCount">=</div>
   </div>
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 // 计算盒子
-const countBox = reactive({
-  value: 0,
-})
+const count_result = ref('')
+const numberArr = reactive([])
+const countBox = reactive([])
 
 const getCount = e => {
-  let countResult = document.getElementById('count_result')
-  let data = e.target.innerText
-  countResult.value += data
+  count_result.value.value += e.target.innerText
+  numberArr.push(e.target.innerText)
 }
 
 // 计算
-const jiaCount = () => {
-  let countResult = document.getElementById('count_result')
-  if (countResult.value[countResult.value]) {
-    // console.log(1);
+const sizeCount = e => {
+  let data = count_result.value.value
+  if (data.length === 0) return
+  if (isNaN(parseInt(data[data.length - 1]))) return
+  if (numberArr.length) {
+    countBox.push(numberArr.join(''))
   }
-  countResult.value += '+'
+  count_result.value.value += e.target.innerText
+  countBox.push(e.target.innerText)
+  numberArr.splice(0, numberArr.length)
 }
-const jianCount = () => {
-  let countResult = document.getElementById('count_result')
-  countResult.value += '-'
-}
-const shenCount = () => {
-  let countResult = document.getElementById('count_result')
-  countResult.value += '*'
-}
-const chuCount = () => {
-  let countResult = document.getElementById('count_result')
-  countResult.value += '/'
-}
+
 const dengyuCount = () => {
-  let countResult = document.getElementById('count_result')
+  if (countBox.length === 0) return
+  countBox.push(numberArr.join(''))
+  /**
+   * 运算规则
+   * 若有乘除先算乘除结果再算加减结果
+   * 除不尽时默认2位小数
+   */
+  function fourOperations() {
+    for (let i = 0; i < countBox.length; i++) {
+      if (countBox.indexOf('*') > -1) {
+        if (countBox[i] === '*') {
+          countBox.splice(i - 1, 3, Number(countBox[i - 1]) * Number(countBox[i + 1]))
+        }
+      } else {
+        if (countBox.indexOf('/') > -1) {
+          if (countBox[i] === '/') {
+            let data = Number(countBox[i - 1]) / Number(countBox[i + 1])
+            // 判断data是否为整数
+            if (data % 1 !== 0) {
+              data = data.toFixed(2)
+            }
+            countBox.splice(i - 1, 3, data)
+          }
+        } else {
+          if (countBox.indexOf('+') > -1) {
+            if (countBox[i] === '+') {
+              countBox.splice(i - 1, 3, Number(countBox[i - 1]) + Number(countBox[i + 1]))
+            }
+          } else {
+            if (countBox[i] === '-') {
+              countBox.splice(i - 1, 3, Number(countBox[i - 1]) - Number(countBox[i + 1]))
+            }
+          }
+        }
+      }
+    }
+    if (countBox.length > 1) {
+      fourOperations()
+    } else {
+      count_result.value.value = countBox[0]
+      // 清空多余数据
+      numberArr.splice(0, numberArr.length)
+    }
+  }
+  fourOperations()
 }
 </script>
 
